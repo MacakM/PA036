@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCache.Api", "DotNetCache.Api\DotNetCache.Api.csproj", "{386933E5-28B2-4022-B6E4-85D8468B9C34}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCache.Logic", "DotNetCache.Logic\DotNetCache.Logic.csproj", "{B7D820FA-E72B-4CDB-8FEE-0F9BECC14B9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCache.DataAccess", "DotNetCache.DataAccess\DotNetCache.DataAccess.csproj", "{0021C708-2379-4DF0-A48E-DBF8E55830E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{386933E5-28B2-4022-B6E4-85D8468B9C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{386933E5-28B2-4022-B6E4-85D8468B9C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{386933E5-28B2-4022-B6E4-85D8468B9C34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7D820FA-E72B-4CDB-8FEE-0F9BECC14B9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7D820FA-E72B-4CDB-8FEE-0F9BECC14B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7D820FA-E72B-4CDB-8FEE-0F9BECC14B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7D820FA-E72B-4CDB-8FEE-0F9BECC14B9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0021C708-2379-4DF0-A48E-DBF8E55830E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0021C708-2379-4DF0-A48E-DBF8E55830E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0021C708-2379-4DF0-A48E-DBF8E55830E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0021C708-2379-4DF0-A48E-DBF8E55830E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
