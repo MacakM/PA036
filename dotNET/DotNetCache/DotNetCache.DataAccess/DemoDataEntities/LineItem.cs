@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DotNetCache.DataAccess.DemoDataEntities
+{
+    public class LineItem
+    {
+        public int L_ORDERKEY { get; set; }
+
+        public int L_PARTKEY { get; set; }
+
+        public int L_SUPPKEY { get; set; }
+
+        public int L_LINENUMBER { get; set; }
+
+        public decimal L_QUANTITY { get; set; }
+
+        public decimal L_EXTENDEDPRICE { get; set; }
+
+        public decimal L_DISCOUNT { get; set; }
+
+        public decimal L_TAX { get; set; }
+
+        public string L_RETURNFLAG { get; set; }
+
+        public string L_LINESTATUS { get; set; }
+
+        public DateTime L_SHIPDATE { get; set; }
+
+        public DateTime L_COMMITDATE { get; set; }
+
+        public DateTime L_RECEIPTDATE { get; set; }
+
+        public string L_SHIPINSTRUCT { get; set; }
+
+        public string L_SHIPMODE { get; set; }
+
+        public string L_COMMENT { get; set; }
+
+    }
+
+}
