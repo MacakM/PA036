@@ -9,7 +9,7 @@ namespace DotNetCache.Logic.Services
 {
     public class ExperimentService
     {
-        private ExperimentBase experiment;
+        private readonly ExperimentBase experiment;
         public ExperimentService(ExperimentBase experiment)
         {
             this.experiment = experiment;
