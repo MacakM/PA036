@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace DotNetCache.DataAccess.DemoDataEntities
 {
     public class LineItem
     {
+        [Key]
         public int L_ORDERKEY { get; set; }
 
         public int L_PARTKEY { get; set; }

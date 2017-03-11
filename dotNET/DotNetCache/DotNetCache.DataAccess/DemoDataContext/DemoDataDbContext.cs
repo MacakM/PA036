@@ -19,7 +19,7 @@ namespace DotNetCache.DataAccess.DemoDataContext
         public DbSet<Region> Regions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
 
-        protected DemoDataDbContext()
+        public DemoDataDbContext()
         {
         }
 
