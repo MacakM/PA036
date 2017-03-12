@@ -1,0 +1,8 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    DB OK
+    <br/>
+    Table Customers: {{ entities|length }} entries
+    <br/>
+    Materialized in {{ event.duration }} ms with {{ event.memory }}B of memory
+{% endblock %}
