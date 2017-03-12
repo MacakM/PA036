@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,9 @@ namespace DotNetCache.DataAccess.DemoDataEntities
         public int O_ORDERKEY { get; set; }
 
         public int O_CUSTKEY { get; set; }
+
+        [ForeignKey("O_CUSTKEY")]
+        public Customer Customer { get; set; }
 
         public string O_ORDERSTATUS { get; set; }
 

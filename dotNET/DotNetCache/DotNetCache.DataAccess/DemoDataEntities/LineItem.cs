@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace DotNetCache.DataAccess.DemoDataEntities
 {
+    /// <summary>
+    /// Keys not set in DB!!!
+    /// </summary>
     public class LineItem
     {
-        [Key]
         public int L_ORDERKEY { get; set; }
 
         public int L_PARTKEY { get; set; }
