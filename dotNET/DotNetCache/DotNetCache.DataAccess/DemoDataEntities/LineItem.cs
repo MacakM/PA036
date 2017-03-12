@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,12 +13,20 @@ namespace DotNetCache.DataAccess.DemoDataEntities
     /// </summary>
     public class LineItem
     {
+        [Key]
         public int L_ORDERKEY { get; set; }
 
         public int L_PARTKEY { get; set; }
 
+        [ForeignKey("L_PARTKEY")]
+        public Part Part { get; set; }
+
         public int L_SUPPKEY { get; set; }
 
+        [ForeignKey("L_SUPPKEY")]
+        public Supplier Supplier { get; set; }
+
+        [Key]
         public int L_LINENUMBER { get; set; }
 
         public decimal L_QUANTITY { get; set; }
