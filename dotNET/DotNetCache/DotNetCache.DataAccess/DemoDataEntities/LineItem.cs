@@ -1,32 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DotNetCache.DataAccess.DemoDataEntities
 {
     /// <summary>
     /// Keys not set in DB!!!
     /// </summary>
+    [Table("LineItem")]
     public class LineItem
     {
-        [Key]
+        [Column(Order = 0), Key]
         public int L_ORDERKEY { get; set; }
 
         public int L_PARTKEY { get; set; }
 
         [ForeignKey("L_PARTKEY")]
-        public Part Part { get; set; }
+        public virtual Part Part { get; set; }
 
         public int L_SUPPKEY { get; set; }
 
         [ForeignKey("L_SUPPKEY")]
-        public Supplier Supplier { get; set; }
+        public virtual Supplier Supplier { get; set; }
 
-        [Key]
+        [Column(Order = 1), Key]
         public int L_LINENUMBER { get; set; }
 
         public decimal L_QUANTITY { get; set; }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using DotNetCache.DataAccess.DemoDataEntities;
 
 namespace DotNetCache.DataAccess.DemoDataContext
@@ -19,7 +14,7 @@ namespace DotNetCache.DataAccess.DemoDataContext
         public DbSet<Region> Regions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
 
-        public DemoDataDbContext()
+        public DemoDataDbContext() : base("paste cs here")
         {
         }
 

@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DotNetCache.DataAccess.DemoDataEntities
 {
+    [Table("PartSupp")]
     public class PartSupp
     {
-        [Key]
+        [Column(Order = 0), Key]
         public int PS_PARTKEY { get; set; }
 
         [ForeignKey("PS_PARTKEY")]
-        public Part Part { get; set; }
+        public virtual Part Part { get; set; }
 
-        [Key]
+        [Column(Order = 1), Key]
         public int PS_SUPPKEY { get; set; }
 
         [ForeignKey("PS_SUPPKEY")]
-        public Supplier Supplier { get; set; }
+        public virtual Supplier Supplier { get; set; }
 
         public int PS_AVAILQTY { get; set; }
 

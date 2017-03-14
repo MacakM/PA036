@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DotNetCache.DataAccess.DemoDataEntities
 {
+    [Table("Supplier")]
     public class Supplier
     {
         [Key]
@@ -19,7 +15,7 @@ namespace DotNetCache.DataAccess.DemoDataEntities
 
         public int S_NATIONKEY { get; set; }
         [ForeignKey("S_NATIONKEY")]
-        public Nation Nation { get; set; }
+        public virtual Nation Nation { get; set; }
 
         public string S_PHONE { get; set; }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
+﻿using System.Linq;
 using DotNetCache.DataAccess.DemoDataContext;
 
 namespace DotNetCache.Logic.Experiments
