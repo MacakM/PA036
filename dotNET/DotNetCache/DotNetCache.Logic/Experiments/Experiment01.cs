@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using DotNetCache.DataAccess.DemoDataContext;
+using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
 {
@@ -15,14 +16,14 @@ namespace DotNetCache.Logic.Experiments
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
-                var customers = db.Customers.ToList();
+                var customers = db.Customers.Cacheable().ToList();
                 customerId = customers.First().C_CUSTKEY;
             }
 
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
-                var customers = db.Customers.Find(customerId);
+                var customers = db.Customers.First(c => c.C_CUSTKEY == customerId);
             }
         }
     }

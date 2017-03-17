@@ -3,6 +3,7 @@
     public abstract class ExperimentBase
     {
         protected string ConnectionString;
+
         protected ExperimentBase(string connectionString)
         {
             ConnectionString = connectionString;

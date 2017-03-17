@@ -1,5 +1,7 @@
 ﻿using System.Data.Entity;
+using System.Linq;
 using DotNetCache.DataAccess.DemoDataEntities;
+using EFSecondLevelCache;
 
 namespace DotNetCache.DataAccess.DemoDataContext
 {
@@ -21,5 +23,34 @@ namespace DotNetCache.DataAccess.DemoDataContext
         public DemoDataDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
         }
+
+        public override int SaveChanges()
+        {
+            return SaveAllChanges();
+        }
+
+        public int SaveAllChanges(bool invalidateCacheDependencies = true)
+        {
+            var changedEntityNames = GetChangedEntityNames();
+            var result = base.SaveChanges();
+            if (invalidateCacheDependencies)
+            {
+                new EFCacheServiceProvider().InvalidateCacheDependencies(changedEntityNames);
+            }
+            return result;
+        }
+
+        private string[] GetChangedEntityNames()
+        {
+            // Updated version of this method: \EFSecondLevelCache\EFSecondLevelCache.Tests\EFSecondLevelCache.TestDataLayer\DataLayer\SampleContext.cs
+            return this.ChangeTracker.Entries()
+                .Where(x => x.State == EntityState.Added ||
+                            x.State == EntityState.Modified ||
+                            x.State == EntityState.Deleted)
+                .Select(x => System.Data.Entity.Core.Objects.ObjectContext.GetObjectType(x.Entity.GetType()).FullName)
+                .Distinct()
+                .ToArray();
+        }
+
     }
 }
