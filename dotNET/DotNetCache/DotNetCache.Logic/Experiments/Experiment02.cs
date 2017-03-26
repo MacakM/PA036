@@ -1,37 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using DotNetCache.DataAccess.DemoDataContext;
 using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
 {
-    public class Experiment01 : ExperimentBase
+    public class Experiment02 : ExperimentBase
     {
-        public Experiment01(string connectionString) : base(connectionString)
+        public Experiment02(string connectionString) : base(connectionString)
         {
         }
 
         public override List<ExperimentResult> Start()
         {
-            int customerId;
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
-                var customers = db.Customers.Cacheable().ToList();
-                customerId = customers.First().C_CUSTKEY;
-                
+
                 for (int i = 0; i < 3; i++)
                 {
                     StartTime();
-                    var res = db.Customers.Cacheable().First(c => c.C_CUSTKEY == customerId);
+                    var res = db.Orders.Cacheable().Where(o => o.O_TOTALPRICE < 1000).ToList();
                     results.Add(new ExperimentResult(DbQueryCached(), StopTime()));
                 }
             }
 
             return results;
         }
+
+        
     }
 }

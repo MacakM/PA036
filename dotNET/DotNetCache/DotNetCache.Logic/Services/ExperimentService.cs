@@ -1,4 +1,5 @@
-﻿using DotNetCache.Logic.Experiments;
+﻿using System.Collections.Generic;
+using DotNetCache.Logic.Experiments;
 
 namespace DotNetCache.Logic.Services
 {
@@ -10,10 +11,9 @@ namespace DotNetCache.Logic.Services
             this.experiment = experiment;
         }
 
-        public string Start()
+        public List<ExperimentResult> Start()
         {
-            experiment.Start();
-            return experiment.Log;
+            return experiment.Start();
         }
     }
 }
