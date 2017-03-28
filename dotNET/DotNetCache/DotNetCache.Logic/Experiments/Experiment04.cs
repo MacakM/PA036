@@ -24,16 +24,15 @@ namespace DotNetCache.Logic.Experiments
                 // netusim coho s atu snazime akoze dosiahnut? zistit ci dotazovalo v druhom query len jednu tabulku? gl s tym
 
                 StartTime();
-                var ordersQuery = from ord in db.Orders.Cacheable()
-                    join cust in db.Customers.Cacheable() on ord.O_CUSTKEY equals cust.C_CUSTKEY
-                    select ord;
+                var ordersQuery = db.Orders.Cacheable()
+                    .Join(db.Customers.Cacheable(), ord => ord.O_CUSTKEY, cust => cust.C_CUSTKEY, (ord, cust) => ord);
                 var res = ordersQuery.ToList();
                 results.Add(new ExperimentResult(DbQueryCached(), StopTime()));
 
                 StartTime();
-                var custQuery = from cust in db.Customers.Cacheable()
-                    join nation in db.Nations.Cacheable() on cust.C_NATIONKEY equals nation.N_NATIONKEY
-                    select cust;
+                var custQuery = db.Customers.Cacheable()
+                    .Join(db.Nations.Cacheable(), cust => cust.C_NATIONKEY, nation => nation.N_NATIONKEY,
+                        (cust, nation) => cust);
                 var res2 = custQuery.ToList();
                 results.Add(new ExperimentResult(DbQueryCached(), StopTime()));
             }
