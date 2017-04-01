@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using DotNetCache.DataAccess.DemoDataEntities;
-using EFSecondLevelCache;
 
 namespace DotNetCache.DataAccess.DemoDataContext
 {
@@ -24,12 +23,9 @@ namespace DotNetCache.DataAccess.DemoDataContext
         {
         }
 
-        public override int SaveChanges()
-        {
-            return SaveAllChanges();
-        }
 
-        public int SaveAllChanges(bool invalidateCacheDependencies = true)
+
+      /*  public int SaveAllChanges(bool invalidateCacheDependencies = true)
         {
             var changedEntityNames = GetChangedEntityNames();
             var result = base.SaveChanges();
@@ -39,8 +35,8 @@ namespace DotNetCache.DataAccess.DemoDataContext
             }
             return result;
         }
-
-        private string[] GetChangedEntityNames()
+        */
+     /*   private string[] GetChangedEntityNames()
         {
             // Updated version of this method: \EFSecondLevelCache\EFSecondLevelCache.Tests\EFSecondLevelCache.TestDataLayer\DataLayer\SampleContext.cs
             return this.ChangeTracker.Entries()
@@ -50,7 +46,7 @@ namespace DotNetCache.DataAccess.DemoDataContext
                 .Select(x => System.Data.Entity.Core.Objects.ObjectContext.GetObjectType(x.Entity.GetType()).FullName)
                 .Distinct()
                 .ToArray();
-        }
+        }*/
 
     }
 }
