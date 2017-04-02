@@ -41,7 +41,7 @@ ORDER BY x.last_execution_time DESC;";
             {
                 db.Database.Log = s => Log += s;
 
-                using (SqlConnection conn = new SqlConnection(db.Database.Connection.ConnectionString + "password=DBTestPass123;"))
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
                 {
                     using (SqlCommand command = new SqlCommand(_serverLogQuery, conn))
                     {
