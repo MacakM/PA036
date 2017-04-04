@@ -45,8 +45,13 @@ ORDER BY x.last_execution_time DESC;";
                 {
                     using (SqlCommand command = new SqlCommand(_serverLogQuery, conn))
                     {
-                        conn.Open();
-                        DateTime result = (DateTime)command.ExecuteScalar();
+                        DateTime result = new DateTime();
+                        try
+                        {
+                            conn.Open();
+                            result = (DateTime)command.ExecuteScalar();
+                        }
+                        catch { }
                         int compare = DateTime.Compare(_lastQuery, result);
                         //Console.WriteLine(result.ToString("hh:mm:ss.fff") + "\n" + _lastQuery.ToString("hh:mm:ss.fff"));
                         _lastQuery = result;

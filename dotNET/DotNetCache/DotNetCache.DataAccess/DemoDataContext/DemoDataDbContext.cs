@@ -17,10 +17,12 @@ namespace DotNetCache.DataAccess.DemoDataContext
 
         public DemoDataDbContext() : base("")
         {
+            Database.SetInitializer<DemoDataDbContext>(null);
         }
 
         public DemoDataDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
+            Database.SetInitializer<DemoDataDbContext>(null);
         }
 
 

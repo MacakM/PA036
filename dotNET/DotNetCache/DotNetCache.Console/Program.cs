@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using DotNetCache.DataAccess.DemoDataContext;
 using DotNetCache.DataAccess.DemoDataEntities;
@@ -10,17 +12,18 @@ namespace DotNetCache.Console
 {
     public class Program
     {
-        public const string ConnectionString =
-            "INSERT HERE";
+        public static string ConnectionString =
+            @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "200M.mdf") + ";Integrated Security=True";
         public static void Main(string[] args)
         {
-            var experiments = new List<List<ExperimentResult>>();
-
-            experiments.Add(new ExperimentService(new Experiment01(ConnectionString)).Start());
-            experiments.Add(new ExperimentService(new Experiment02(ConnectionString)).Start());
-            experiments.Add(new ExperimentService(new Experiment03(ConnectionString)).Start());
-            experiments.Add(new ExperimentService(new Experiment04(ConnectionString)).Start());
-            experiments.Add(new ExperimentService(new Experiment05(ConnectionString)).Start());
+            var experiments = new List<List<ExperimentResult>>
+            {
+                new ExperimentService(new Experiment01(ConnectionString)).Start(),
+                new ExperimentService(new Experiment02(ConnectionString)).Start(),
+                new ExperimentService(new Experiment03(ConnectionString)).Start(),
+                new ExperimentService(new Experiment04(ConnectionString)).Start(),
+                new ExperimentService(new Experiment05(ConnectionString)).Start()
+            };
 
             for (int i = 0; i < experiments.Count; i++)
             {
@@ -31,7 +34,7 @@ namespace DotNetCache.Console
                 }
                 System.Console.WriteLine();
             }
-
+            
             System.Console.ReadKey();
         }
     }
