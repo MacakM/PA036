@@ -23,7 +23,7 @@ namespace DotNetCache.Logic.Experiments
 
         public override string ToString()
         {
-            return "Cached: " + Cached + ", Time: " + Time + " ms, Memory: " + Memory + "b";
+            return "Cached: " + Cached + ", Time: " + Time + " ms, Memory: " + Memory + " entries in cache";
         }
     }
 }

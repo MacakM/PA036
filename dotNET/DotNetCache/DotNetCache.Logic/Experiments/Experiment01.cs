@@ -27,7 +27,7 @@ namespace DotNetCache.Logic.Experiments
                 {
                     StartTime();
                     var res = db.Customers.Cacheable().First(c => c.C_CUSTKEY == customerId);
-                    results.Add(new ExperimentResult(DbQueryCached(), StopTime()));
+                    results.Add(new ExperimentResult(DbQueryCached(), StopTime(), DemoDataDbContext.Cache.Count));
                 }
             }
 

@@ -60,10 +60,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotNetCache.DataAccess\DotNetCache.DataAccess.csproj">
-      <Project>{0021C708-2379-4DF0-A48E-DBF8E55830E7}</Project>
-      <Name>DotNetCache.DataAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetCache.Logic\DotNetCache.Logic.csproj">
       <Project>{b7d820fa-e72b-4cdb-8fee-0f9becc14b9b}</Project>
       <Name>DotNetCache.Logic</Name>

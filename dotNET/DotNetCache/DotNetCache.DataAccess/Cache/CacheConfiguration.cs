@@ -1,5 +1,7 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Core.Common;
+using DotNetCache.DataAccess.DemoDataContext;
 using EFCache;
 
 namespace DotNetCache.DataAccess.Cache
@@ -8,7 +10,7 @@ namespace DotNetCache.DataAccess.Cache
     {
         public CacheConfiguration()
         {
-            var transactionHandler = new CacheTransactionHandler(new InMemoryCache());
+            var transactionHandler = new CacheTransactionHandler(DemoDataDbContext.Cache);
 
             AddInterceptor(transactionHandler);
 

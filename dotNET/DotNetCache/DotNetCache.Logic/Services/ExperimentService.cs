@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using DotNetCache.DataAccess.DemoDataContext;
 using DotNetCache.Logic.Experiments;
+using EFCache;
 
 namespace DotNetCache.Logic.Services
 {
@@ -13,6 +15,7 @@ namespace DotNetCache.Logic.Services
 
         public List<ExperimentResult> Start()
         {
+            DemoDataDbContext.Cache.Purge();
             return experiment.Start();
         }
     }

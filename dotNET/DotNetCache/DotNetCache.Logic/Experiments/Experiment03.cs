@@ -22,15 +22,15 @@ namespace DotNetCache.Logic.Experiments
 
                 StartTime();
                 var customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 500).ToList();
-                results.Add(new ExperimentResult(DbQueryCached(), StopTime()));
+                results.Add(new ExperimentResult(DbQueryCached(), StopTime(), DemoDataDbContext.Cache.Count));
 
                 StartTime();
                 customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 10).ToList();
-                results.Add(new ExperimentResult(DbQueryCached(), StopTime()));
+                results.Add(new ExperimentResult(DbQueryCached(), StopTime(), DemoDataDbContext.Cache.Count));
 
                 StartTime();
                 customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 1000).ToList();
-                results.Add(new ExperimentResult(DbQueryCached(), StopTime()));
+                results.Add(new ExperimentResult(DbQueryCached(), StopTime(), DemoDataDbContext.Cache.Count));
             }
 
             return results;

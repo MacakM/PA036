@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using DotNetCache.DataAccess.DemoDataContext;
-using DotNetCache.DataAccess.DemoDataEntities;
 using DotNetCache.Logic.Experiments;
 using DotNetCache.Logic.Services;
 
@@ -16,6 +12,7 @@ namespace DotNetCache.Console
             @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "200M.mdf") + ";Integrated Security=True";
         public static void Main(string[] args)
         {
+
             var experiments = new List<List<ExperimentResult>>
             {
                 new ExperimentService(new Experiment01(ConnectionString)).Start(),

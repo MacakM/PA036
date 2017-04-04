@@ -72,6 +72,10 @@
       <Project>{0021c708-2379-4df0-a48e-dbf8e55830e7}</Project>
       <Name>DotNetCache.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EFCache\EFCache.csproj">
+      <Project>{ED6F66AC-B415-46A8-A86B-E69158B23D2D}</Project>
+      <Name>EFCache</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="readme.txt" />

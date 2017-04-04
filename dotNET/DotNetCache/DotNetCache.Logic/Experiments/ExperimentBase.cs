@@ -19,7 +19,7 @@ FROM sys.dm_exec_cached_plans AS p
 INNER JOIN sys.dm_exec_query_stats AS s
    ON p.plan_handle = s.plan_handle
 CROSS APPLY sys.dm_exec_sql_text(p.plan_handle) AS t
-WHERE dbid=5
+WHERE dbid=1
 ORDER BY s.last_execution_time DESC) x
 WHERE x.text NOT LIKE '%INFORMATION_SCHEMA%'
 AND x.text NOT LIKE '%sys.dm_exec_cached_plans%'
@@ -45,13 +45,8 @@ ORDER BY x.last_execution_time DESC;";
                 {
                     using (SqlCommand command = new SqlCommand(_serverLogQuery, conn))
                     {
-                        DateTime result = new DateTime();
-                        try
-                        {
-                            conn.Open();
-                            result = (DateTime)command.ExecuteScalar();
-                        }
-                        catch { }
+                        conn.Open();
+                        var result = (DateTime)command.ExecuteScalar();
                         int compare = DateTime.Compare(_lastQuery, result);
                         //Console.WriteLine(result.ToString("hh:mm:ss.fff") + "\n" + _lastQuery.ToString("hh:mm:ss.fff"));
                         _lastQuery = result;
