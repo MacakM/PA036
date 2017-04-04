@@ -6,10 +6,16 @@ namespace EFCache
     using System.Linq;
     using System.Collections.Generic;
 
+    [Serializable]
     public class InMemoryCache : ICache
     {
         private readonly Dictionary<string, CacheEntry> _cache = new Dictionary<string, CacheEntry>();
         private readonly Dictionary<string, HashSet<string>> _entitySetToKey = new Dictionary<string, HashSet<string>>();
+
+        public void ClearCache()
+        {
+            _cache.Clear();
+        }
 
         public bool GetItem(string key, out object value)
         {
@@ -165,6 +171,7 @@ namespace EFCache
             return entry.AbsoluteExpiration < now || (now - entry.LastAccess) > entry.SlidingExpiration;
         }
 
+        [Serializable]
         private class CacheEntry
         {
             private readonly object _value;

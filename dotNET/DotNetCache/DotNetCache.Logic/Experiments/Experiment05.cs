@@ -26,14 +26,14 @@ namespace DotNetCache.Logic.Experiments
                 {
                     StartTime();
                     var res = customers.Take(10).Skip(i*10).ToList();
-                    results.Add(new ExperimentResult(DbQueryCached(), StopTime(), DemoDataDbContext.Cache.Count));
+                    results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
                 }
 
                 for (int i = 0; i < 3; i++)
                 {
                     StartTime();
                     var res = customers.Take(10).Skip(i * 10).ToList();
-                    results.Add(new ExperimentResult(DbQueryCached(), StopTime(), DemoDataDbContext.Cache.Count));
+                    results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
                 }
             }
 

@@ -15,6 +15,7 @@ namespace DotNetCache.Logic.Services
 
         public List<ExperimentResult> Start()
         {
+            DemoDataDbContext.Cache.ClearCache();
             DemoDataDbContext.Cache.Purge();
             return experiment.Start();
         }

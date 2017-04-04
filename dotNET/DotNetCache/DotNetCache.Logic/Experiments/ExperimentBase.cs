@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using DotNetCache.DataAccess.DemoDataContext;
 using EFSecondLevelCache;
 
@@ -19,7 +21,7 @@ FROM sys.dm_exec_cached_plans AS p
 INNER JOIN sys.dm_exec_query_stats AS s
    ON p.plan_handle = s.plan_handle
 CROSS APPLY sys.dm_exec_sql_text(p.plan_handle) AS t
-WHERE dbid=1
+WHERE dbid=9
 ORDER BY s.last_execution_time DESC) x
 WHERE x.text NOT LIKE '%INFORMATION_SCHEMA%'
 AND x.text NOT LIKE '%sys.dm_exec_cached_plans%'
@@ -65,6 +67,18 @@ ORDER BY x.last_execution_time DESC;";
         {
             stopwatch.Stop();
             return (int)stopwatch.ElapsedMilliseconds;
+        }
+
+        protected double GetCacheSize()
+        {
+            long size = 0;
+            using (Stream s = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(s, DemoDataDbContext.Cache);
+                size = s.Length;
+            }
+            return (size / 1024f) / 1024f;
         }
     }
 }
