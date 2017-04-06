@@ -37,23 +37,31 @@ ORDER BY x.last_execution_time DESC;";
 
         protected bool DbQueryCached()
         {
-            using (var db = new DemoDataDbContext(ConnectionString))
+            try
             {
-                db.Database.Log = s => Log += s;
-
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                using (var db = new DemoDataDbContext(ConnectionString))
                 {
-                    using (SqlCommand command = new SqlCommand(_serverLogQuery, conn))
+                    db.Database.Log = s => Log += s;
+
+                    using (SqlConnection conn = new SqlConnection(ConnectionString))
                     {
-                        conn.Open();
-                        DateTime result = (DateTime)command.ExecuteScalar();
-                        int compare = DateTime.Compare(_lastQuery, result);
-                        //Console.WriteLine(result.ToString("hh:mm:ss.fff") + "\n" + _lastQuery.ToString("hh:mm:ss.fff"));
-                        _lastQuery = result;
-                        return compare == 0;
+                        using (SqlCommand command = new SqlCommand(_serverLogQuery, conn))
+                        {
+                            conn.Open();
+                            DateTime result = (DateTime) command.ExecuteScalar();
+                            int compare = DateTime.Compare(_lastQuery, result);
+                            //Console.WriteLine(result.ToString("hh:mm:ss.fff") + "\n" + _lastQuery.ToString("hh:mm:ss.fff"));
+                            _lastQuery = result;
+                            return compare == 0;
+                        }
                     }
                 }
             }
+            catch (Exception e)
+            {
+                return false;
+            }
+           
         }
 
         protected void StartTime()

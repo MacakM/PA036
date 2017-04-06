@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using DotNetCache.DataAccess.DemoDataContext;
 using DotNetCache.DataAccess.DemoDataEntities;
 using DotNetCache.Logic.Experiments;
@@ -10,8 +13,8 @@ namespace DotNetCache.Console
 {
     public class Program
     {
-        public const string ConnectionString =
-            "INSERT HERE";
+        public static string ConnectionString =
+            @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"200M.mdf")+";Integrated Security=True";
         public static void Main(string[] args)
         {
             var experiments = new List<List<ExperimentResult>>();
