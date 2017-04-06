@@ -25,7 +25,7 @@ namespace DotNetCache.Logic.Experiments
                 {
                     StartTime();
                     var res = db.Orders.Cacheable().Where(o => o.O_TOTALPRICE < 1000).ToList();
-                    results.Add(new ExperimentResult(DbQueryCached(), StopTime()));
+                    results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
                 }
             }
 

@@ -1,11 +1,14 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using DotNetCache.DataAccess.DemoDataEntities;
+using EFCache;
 
 namespace DotNetCache.DataAccess.DemoDataContext
 {
     public class DemoDataDbContext : DbContext
     {
+        public static readonly InMemoryCache Cache = new InMemoryCache();
+
         public DbSet<Customer> Customers { get; set; }
         public DbSet<LineItem> LineItems  { get; set; }
         public DbSet<Nation> Nations { get; set; }
@@ -17,10 +20,12 @@ namespace DotNetCache.DataAccess.DemoDataContext
 
         public DemoDataDbContext() : base("")
         {
+            Database.SetInitializer<DemoDataDbContext>(null);
         }
 
         public DemoDataDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
+            Database.SetInitializer<DemoDataDbContext>(null);
         }
 
 
