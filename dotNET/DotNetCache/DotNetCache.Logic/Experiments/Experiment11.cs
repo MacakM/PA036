@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DotNetCache.DataAccess.DemoDataContext;
 using EFSecondLevelCache;
@@ -8,11 +6,12 @@ using EFSecondLevelCache;
 namespace DotNetCache.Logic.Experiments
 {
     /// <summary>
-    /// Tests first level cache after UPDATE.
+    /// Tests first level cache after DELETE.
+    /// TODO: NOT WORKING
     /// </summary>
-    public class Experiment09 : ExperimentBase
+    public class Experiment11 : ExperimentBase
     {
-        public Experiment09(string connectionString) : base(connectionString)
+        public Experiment11(string connectionString) : base(connectionString)
         {
         }
 
@@ -33,13 +32,14 @@ namespace DotNetCache.Logic.Experiments
             {
                 db.Database.Log = s => Log += s;
                 var customer = db.Customers.Find(customerId);
-                customer.C_COMMENT = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                db.Customers.Remove(customer);
                 db.SaveChanges();
             }
 
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
+                customerId = db.Customers.Cacheable().First().C_CUSTKEY;
 
                 StartTime();
                 var res = db.Customers.Cacheable().First(c => c.C_CUSTKEY == customerId);
