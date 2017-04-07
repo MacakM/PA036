@@ -2,6 +2,7 @@
 
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Timers;
 
 namespace EFCache
 {
@@ -17,6 +18,25 @@ namespace EFCache
         public static bool LastCached { get; private set; } 
         public static double EntryCountLimit { get; set; }
         public static double EntrySizeLimit { get; set; }
+
+        private static int _purgeSpan = Int32.MaxValue;
+        public static int PurgeSpan
+        {
+            get { return _purgeSpan; }
+            set
+            {
+                if (value <= 0)
+                {
+                    _purgeSpan = 1;
+                }
+                _purgeSpan = value;
+            }
+        }
+
+        public InMemoryCache()
+        {
+            PurgePeriodically();
+        }
         public void ClearCache()
         {
             _cache.Clear();
@@ -54,6 +74,24 @@ namespace EFCache
             LastCached = false;
             return false;
         }
+
+
+
+        public void PurgePeriodically()
+        {
+            Timer mtimer = new Timer();
+            mtimer.Interval = PurgeSpan; //1ms
+            mtimer.Elapsed += Purge;
+            mtimer.Start();
+        }
+
+        private int x = 0;
+        private void Purge(object sender, ElapsedEventArgs e)
+        {
+            x++;
+            Purge();
+        }
+
 
         public void PutItem(string key, object value, IEnumerable<string> dependentEntitySets, TimeSpan slidingExpiration, DateTimeOffset absoluteExpiration)
         {
