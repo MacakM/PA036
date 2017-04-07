@@ -1,5 +1,8 @@
 ﻿// Copyright (c) Pawel Kadluczka, Inc. All rights reserved. See License.txt in the project root for license information.
 
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+
 namespace EFCache
 {
     using System;
@@ -12,6 +15,8 @@ namespace EFCache
         private readonly Dictionary<string, CacheEntry> _cache = new Dictionary<string, CacheEntry>();
         private readonly Dictionary<string, HashSet<string>> _entitySetToKey = new Dictionary<string, HashSet<string>>();
         public static bool LastCached { get; private set; } 
+        public static double EntryCountLimit { get; set; }
+        public static double EntrySizeLimit { get; set; }
         public void ClearCache()
         {
             _cache.Clear();
@@ -52,6 +57,10 @@ namespace EFCache
 
         public void PutItem(string key, object value, IEnumerable<string> dependentEntitySets, TimeSpan slidingExpiration, DateTimeOffset absoluteExpiration)
         {
+            if (_cache.Count >= EntryCountLimit || !Compare(_cache, EntrySizeLimit))
+            {
+                return;
+            }
             if (key == null)
             {
                 throw new ArgumentNullException("key");
@@ -81,6 +90,19 @@ namespace EFCache
                     keys.Add(key);                    
                 }
             }
+        }
+
+        private bool Compare(Dictionary<string, CacheEntry> cache, double limit)
+        {
+
+            long size = 0;
+            using (Stream s = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(s, cache);
+                size = s.Length;
+            }
+            return ((size / 1024f) / 1024f)<= limit;
         }
 
         public void InvalidateSets(IEnumerable<string> entitySets)

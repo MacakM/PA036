@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DotNetCache.DataAccess.DemoDataContext;
 using EFSecondLevelCache;
 
@@ -25,7 +21,7 @@ namespace DotNetCache.Logic.Experiments
                 {
                     StartTime();
                     var res = db.Orders.Cacheable().Where(o => o.O_TOTALPRICE < 1000).ToList();
-                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),DemoDataDbContext.Cache.Count));
                 }
             }
 
@@ -34,7 +30,7 @@ namespace DotNetCache.Logic.Experiments
 
         public override ExperimentSettings GetSettings()
         {
-            return new ExperimentSettings();
+            return ExperimentSettings.Default;
         }
     }
 }

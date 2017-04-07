@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DotNetCache.DataAccess.DemoDataContext;
 using EFSecondLevelCache;
 
@@ -22,15 +19,18 @@ namespace DotNetCache.Logic.Experiments
 
                 StartTime();
                 var customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 500).ToList();
-                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
+                    DemoDataDbContext.Cache.Count));
 
                 StartTime();
                 customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 10).ToList();
-                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
+                    DemoDataDbContext.Cache.Count));
 
                 StartTime();
                 customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 1000).ToList();
-                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
+                    DemoDataDbContext.Cache.Count));
             }
 
             return Results;
@@ -38,7 +38,7 @@ namespace DotNetCache.Logic.Experiments
 
         public override ExperimentSettings GetSettings()
         {
-            return new ExperimentSettings();
+            return ExperimentSettings.Default;
         }
     }
 }

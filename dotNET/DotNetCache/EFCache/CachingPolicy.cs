@@ -15,6 +15,7 @@ namespace EFCache
     /// </summary>
     public class CachingPolicy
     {
+        public static TimeSpan SlidingExpiration { get; set; } = TimeSpan.MaxValue;
         private readonly HashSet<string> _cachedTables;
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace EFCache
         protected internal virtual void GetExpirationTimeout(ReadOnlyCollection<EntitySetBase> affectedEntitySets,
             out TimeSpan slidingExpiration, out DateTimeOffset absoluteExpiration)
         {
-            slidingExpiration = TimeSpan.MaxValue;
+            slidingExpiration = SlidingExpiration;
             absoluteExpiration = DateTimeOffset.MaxValue;
         }
     }

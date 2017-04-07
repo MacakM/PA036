@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DotNetCache.DataAccess.DemoDataContext;
-using DotNetCache.DataAccess.DemoDataEntities;
 using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
@@ -27,14 +23,14 @@ namespace DotNetCache.Logic.Experiments
                 var ordersQuery = db.Orders.Cacheable()
                     .Join(db.Customers.Cacheable(), ord => ord.O_CUSTKEY, cust => cust.C_CUSTKEY, (ord, cust) => ord);
                 var res = ordersQuery.ToList();
-                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
 
                 StartTime();
                 var custQuery = db.Customers.Cacheable()
                     .Join(db.Nations.Cacheable(), cust => cust.C_NATIONKEY, nation => nation.N_NATIONKEY,
                         (cust, nation) => cust);
                 var res2 = custQuery.ToList();
-                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
             }
 
             return Results;
@@ -42,7 +38,7 @@ namespace DotNetCache.Logic.Experiments
 
         public override ExperimentSettings GetSettings()
         {
-            return new ExperimentSettings();
+            return ExperimentSettings.Default;
         }
     }
 }

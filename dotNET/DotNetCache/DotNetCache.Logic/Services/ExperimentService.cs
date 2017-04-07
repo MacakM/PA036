@@ -1,23 +1,23 @@
 ﻿using System.Collections.Generic;
 using DotNetCache.DataAccess.DemoDataContext;
 using DotNetCache.Logic.Experiments;
-using EFCache;
 
 namespace DotNetCache.Logic.Services
 {
     public class ExperimentService
     {
-        private readonly ExperimentBase experiment;
+        private readonly ExperimentBase _experiment;
         public ExperimentService(ExperimentBase experiment)
         {
-            this.experiment = experiment;
+            _experiment = experiment;
         }
 
         public List<ExperimentResult> Start()
         {
             DemoDataDbContext.Cache.ClearCache();
             DemoDataDbContext.Cache.Purge();
-            return experiment.Start();
+            _experiment.PrepareSettings();
+            return _experiment.Start();
         }
     }
 }

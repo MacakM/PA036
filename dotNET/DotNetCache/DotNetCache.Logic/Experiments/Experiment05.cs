@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DotNetCache.DataAccess.DemoDataContext;
 using EFSecondLevelCache;
@@ -24,15 +23,15 @@ namespace DotNetCache.Logic.Experiments
                 {
                     StartTime();
                     var res = customers.Take(10).Skip(i*10).ToList();
-                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
-                }
+                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
+            }
 
                 for (int i = 0; i < 3; i++)
                 {
                     StartTime();
                     var res = customers.Take(10).Skip(i * 10).ToList();
-                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
-                }
+                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
+            }
             }
 
             return Results;
@@ -40,7 +39,7 @@ namespace DotNetCache.Logic.Experiments
 
         public override ExperimentSettings GetSettings()
         {
-            return new ExperimentSettings();
+            return ExperimentSettings.Default;
         }
     }
 }

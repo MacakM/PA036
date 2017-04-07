@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using DotNetCache.DataAccess.DemoDataContext;
+using EFCache;
 using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
@@ -27,7 +26,7 @@ namespace DotNetCache.Logic.Experiments
                 {
                     StartTime();
                     var res = db.Customers.Cacheable().First(c => c.C_CUSTKEY == customerId);
-                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
                 }
             }
 
@@ -36,7 +35,13 @@ namespace DotNetCache.Logic.Experiments
 
         public override ExperimentSettings GetSettings()
         {
-            return new ExperimentSettings();
+            return new ExperimentSettings
+            {
+                CachePurgeInterval = TimeSpan.Zero,
+                MaxCacheEntries = 0,
+                MaxCacheSizeInMegaBytes = 0,
+                RelativeCacheEntryValidity = TimeSpan.Zero
+            };
         }
     }
 }

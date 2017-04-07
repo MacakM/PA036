@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using DotNetCache.DataAccess.DemoDataContext;
 using EFCache;
-using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
 {
@@ -17,7 +14,6 @@ namespace DotNetCache.Logic.Experiments
         private DateTime _lastQuery;
         protected string ConnectionString;
         protected List<ExperimentResult> Results = new List<ExperimentResult>();
-        public ExperimentSettings ExperimentSettings { get; set; }
         
         protected ExperimentBase(string connectionString)
         {
@@ -53,6 +49,11 @@ namespace DotNetCache.Logic.Experiments
                 size = s.Length;
             }
             return (size / 1024f) / 1024f;
+        }
+
+        public virtual void PrepareSettings()
+        {
+            ExperimentSettings.SetUpCache(GetSettings());
         }
     }
 }

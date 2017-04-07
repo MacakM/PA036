@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Linq;
 using DotNetCache.DataAccess.DemoDataEntities;
 using EFCache;
 
