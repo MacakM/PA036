@@ -5,6 +5,9 @@ using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
 {
+    /// <summary>
+    /// Tests if I can get same SELECT from cache.
+    /// </summary>
     public class Experiment02 : ExperimentBase
     {
         public Experiment02(string connectionString) : base(connectionString)

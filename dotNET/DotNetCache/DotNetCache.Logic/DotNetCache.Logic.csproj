@@ -58,6 +58,7 @@
     <Compile Include="Experiments\Experiment03.cs" />
     <Compile Include="Experiments\Experiment04.cs" />
     <Compile Include="Experiments\Experiment05.cs" />
+    <Compile Include="Experiments\Experiment06.cs" />
     <Compile Include="Experiments\ExperimentBase.cs" />
     <Compile Include="Experiments\ExperimentResult.cs" />
     <Compile Include="Experiments\ExperimentSettings.cs" />

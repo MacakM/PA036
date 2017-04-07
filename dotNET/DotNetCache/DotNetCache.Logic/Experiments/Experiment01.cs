@@ -7,6 +7,9 @@ using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
 {
+    /// <summary>
+    /// Tests if I can get SELECT of the same row from cache.
+    /// </summary>
     public class Experiment01 : ExperimentBase
     {
         public Experiment01(string connectionString) : base(connectionString)
@@ -19,8 +22,7 @@ namespace DotNetCache.Logic.Experiments
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
-                var customers = db.Customers.Cacheable().ToList();
-                customerId = customers.First().C_CUSTKEY;
+                customerId = db.Customers.Cacheable().First().C_CUSTKEY;
                 
                 for (int i = 0; i < 3; i++)
                 {

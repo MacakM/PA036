@@ -6,11 +6,11 @@ using EFSecondLevelCache;
 namespace DotNetCache.Logic.Experiments
 {
     /// <summary>
-    /// Tests if I can get subset of cached SELECT from cache.
+    /// Tests if I cache doesn't SELECT more rows than was desired.
     /// </summary>
-    public class Experiment03 : ExperimentBase
+    public class Experiment06 : ExperimentBase
     {
-        public Experiment03(string connectionString) : base(connectionString)
+        public Experiment06(string connectionString) : base(connectionString)
         {
         }
 
@@ -26,12 +26,12 @@ namespace DotNetCache.Logic.Experiments
                     DemoDataDbContext.Cache.Count));
 
                 StartTime();
-                customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 250).ToList();
+                customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 501).ToList();
                 Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
                     DemoDataDbContext.Cache.Count));
 
                 StartTime();
-                customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 10).ToList();
+                customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 520).ToList();
                 Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
                     DemoDataDbContext.Cache.Count));
             }

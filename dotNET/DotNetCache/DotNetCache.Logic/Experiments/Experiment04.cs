@@ -5,6 +5,9 @@ using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
 {
+    /// <summary>
+    /// Tests if after A join B when I do B join C I don't need to load B from DB.
+    /// </summary>
     public class Experiment04 : ExperimentBase
     {
         public Experiment04(string connectionString) : base(connectionString)
@@ -16,9 +19,7 @@ namespace DotNetCache.Logic.Experiments
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
-
-                // netusim coho s atu snazime akoze dosiahnut? zistit ci dotazovalo v druhom query len jednu tabulku? gl s tym
-
+                
                 StartTime();
                 var ordersQuery = db.Orders.Cacheable()
                     .Join(db.Customers.Cacheable(), ord => ord.O_CUSTKEY, cust => cust.C_CUSTKEY, (ord, cust) => ord);
