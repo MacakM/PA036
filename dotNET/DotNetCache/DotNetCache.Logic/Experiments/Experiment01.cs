@@ -27,11 +27,16 @@ namespace DotNetCache.Logic.Experiments
                 {
                     StartTime();
                     var res = db.Customers.Cacheable().First(c => c.C_CUSTKEY == customerId);
-                    results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
                 }
             }
 
-            return results;
+            return Results;
+        }
+
+        public override ExperimentSettings GetSettings()
+        {
+            return new ExperimentSettings();
         }
     }
 }

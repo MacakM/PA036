@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using DotNetCache.DataAccess.DemoDataContext;
+using EFCache;
 using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
@@ -14,48 +15,21 @@ namespace DotNetCache.Logic.Experiments
     {
         private Stopwatch stopwatch;
         private DateTime _lastQuery;
-        private string _serverLogQuery =
-            @"SELECT TOP 1 x.last_execution_time FROM 
-(SELECT TOP 20 t.[text], s.last_execution_time
-FROM sys.dm_exec_cached_plans AS p
-INNER JOIN sys.dm_exec_query_stats AS s
-   ON p.plan_handle = s.plan_handle
-CROSS APPLY sys.dm_exec_sql_text(p.plan_handle) AS t
-WHERE dbid=9
-ORDER BY s.last_execution_time DESC) x
-WHERE x.text NOT LIKE '%INFORMATION_SCHEMA%'
-AND x.text NOT LIKE '%sys.dm_exec_cached_plans%'
-ORDER BY x.last_execution_time DESC;";
-
         protected string ConnectionString;
-        protected List<ExperimentResult> results = new List<ExperimentResult>();
-
+        protected List<ExperimentResult> Results = new List<ExperimentResult>();
+        public ExperimentSettings ExperimentSettings { get; set; }
+        
         protected ExperimentBase(string connectionString)
         {
             ConnectionString = connectionString;
         }
         public string Log { get; protected set; }
         public abstract List<ExperimentResult> Start();
+        public abstract ExperimentSettings GetSettings();
 
         protected bool DbQueryCached()
         {
-            using (var db = new DemoDataDbContext(ConnectionString))
-            {
-                db.Database.Log = s => Log += s;
-
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-                    using (SqlCommand command = new SqlCommand(_serverLogQuery, conn))
-                    {
-                        conn.Open();
-                        var result = (DateTime)command.ExecuteScalar();
-                        int compare = DateTime.Compare(_lastQuery, result);
-                        //Console.WriteLine(result.ToString("hh:mm:ss.fff") + "\n" + _lastQuery.ToString("hh:mm:ss.fff"));
-                        _lastQuery = result;
-                        return compare == 0;
-                    }
-                }
-            }
+            return InMemoryCache.LastCached;
         }
 
         protected void StartTime()

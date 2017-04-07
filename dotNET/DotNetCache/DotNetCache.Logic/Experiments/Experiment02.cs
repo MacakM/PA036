@@ -25,13 +25,16 @@ namespace DotNetCache.Logic.Experiments
                 {
                     StartTime();
                     var res = db.Orders.Cacheable().Where(o => o.O_TOTALPRICE < 1000).ToList();
-                    results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
                 }
             }
 
-            return results;
+            return Results;
         }
 
-        
+        public override ExperimentSettings GetSettings()
+        {
+            return new ExperimentSettings();
+        }
     }
 }

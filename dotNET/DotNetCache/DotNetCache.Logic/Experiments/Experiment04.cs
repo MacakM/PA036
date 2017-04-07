@@ -27,18 +27,22 @@ namespace DotNetCache.Logic.Experiments
                 var ordersQuery = db.Orders.Cacheable()
                     .Join(db.Customers.Cacheable(), ord => ord.O_CUSTKEY, cust => cust.C_CUSTKEY, (ord, cust) => ord);
                 var res = ordersQuery.ToList();
-                results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
 
                 StartTime();
                 var custQuery = db.Customers.Cacheable()
                     .Join(db.Nations.Cacheable(), cust => cust.C_NATIONKEY, nation => nation.N_NATIONKEY,
                         (cust, nation) => cust);
                 var res2 = custQuery.ToList();
-                results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
+                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize()));
             }
 
-            return results;
+            return Results;
         }
 
+        public override ExperimentSettings GetSettings()
+        {
+            return new ExperimentSettings();
+        }
     }
 }

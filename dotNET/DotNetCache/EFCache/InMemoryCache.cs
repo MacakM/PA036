@@ -11,7 +11,7 @@ namespace EFCache
     {
         private readonly Dictionary<string, CacheEntry> _cache = new Dictionary<string, CacheEntry>();
         private readonly Dictionary<string, HashSet<string>> _entitySetToKey = new Dictionary<string, HashSet<string>>();
-
+        public static bool LastCached { get; private set; } 
         public void ClearCache()
         {
             _cache.Clear();
@@ -41,11 +41,12 @@ namespace EFCache
                     {
                         entry.LastAccess = now;
                         value = entry.Value;
+                        LastCached = true;
                         return true;
                     }
                 }                
             }
-
+            LastCached = false;
             return false;
         }
 
