@@ -24,14 +24,16 @@ namespace DotNetCache.Console
 
             var experiments = new List<List<ExperimentResult>>
             {
-                new ExperimentService(new Experiment01(ConnectionString200)).Start(),
+                //new ExperimentService(new Experiment01(ConnectionString200)).Start(),
                 new ExperimentService(new Experiment02(ConnectionString200)).Start(),
-                new ExperimentService(new Experiment03(ConnectionString200)).Start(),
-                new ExperimentService(new Experiment04(ConnectionString200)).Start(),
-                new ExperimentService(new Experiment05(ConnectionString200)).Start(),
-                new ExperimentService(new Experiment06(ConnectionString200)).Start(),
-                new ExperimentService(new Experiment07(ConnectionString200)).Start(),
-                new ExperimentService(new Experiment08(ConnectionString200)).Start(),
+                //new ExperimentService(new Experiment03(ConnectionString200)).Start(),
+                //new ExperimentService(new Experiment04(ConnectionString200)).Start(),
+                //new ExperimentService(new Experiment05(ConnectionString200)).Start(),
+                //new ExperimentService(new Experiment06(ConnectionString200)).Start(),
+                //new ExperimentService(new Experiment07(ConnectionString200)).Start(),
+                //new ExperimentService(new Experiment08(ConnectionString200)).Start(),
+                //new ExperimentService(new Experiment09(ConnectionString200)).Start(),
+                new ExperimentService(new Experiment10(ConnectionString200)).Start(),
             };
 
             for (int i = 0; i < experiments.Count; i++)
