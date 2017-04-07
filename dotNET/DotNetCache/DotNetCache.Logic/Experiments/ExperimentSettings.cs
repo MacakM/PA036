@@ -42,7 +42,7 @@ namespace DotNetCache.Logic.Experiments
             MaxCacheSizeInMegaBytes = double.MaxValue,
             MaxCacheEntries = int.MaxValue,
             RelativeCacheEntryValidity = TimeSpan.MaxValue,
-            CachePurgeInterval = Int32.MaxValue
+            CachePurgeInterval = int.MaxValue
         };
     }
 }

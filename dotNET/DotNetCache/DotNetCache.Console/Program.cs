@@ -30,6 +30,8 @@ namespace DotNetCache.Console
                 new ExperimentService(new Experiment04(ConnectionString200)).Start(),
                 new ExperimentService(new Experiment05(ConnectionString200)).Start(),
                 new ExperimentService(new Experiment06(ConnectionString200)).Start(),
+                new ExperimentService(new Experiment07(ConnectionString200)).Start(),
+                new ExperimentService(new Experiment08(ConnectionString200)).Start(),
             };
 
             for (int i = 0; i < experiments.Count; i++)
