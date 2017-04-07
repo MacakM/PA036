@@ -6,11 +6,11 @@ using EFSecondLevelCache;
 namespace DotNetCache.Logic.Experiments
 {
     /// <summary>
-    /// Tests if I cache doesn't SELECT more rows than was desired by condition.
+    /// Tests SELECT TOP 100 then TOP 150.
     /// </summary>
-    public class Experiment06 : ExperimentBase
+    public class Experiment05 : ExperimentBase
     {
-        public Experiment06(string connectionString) : base(connectionString)
+        public Experiment05(string connectionString) : base(connectionString)
         {
         }
 
@@ -20,20 +20,18 @@ namespace DotNetCache.Logic.Experiments
             {
                 db.Database.Log = s => Log += s;
 
+                var customers = db.Customers.Cacheable().OrderBy(c => c.C_CUSTKEY);
+
                 StartTime();
-                var customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 500).ToList();
+                var res = customers.Take(100).ToList();
                 Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
                     DemoDataDbContext.Cache.Count));
 
                 StartTime();
-                customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 501).ToList();
+                res = customers.Take(150).ToList();
                 Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
                     DemoDataDbContext.Cache.Count));
 
-                StartTime();
-                customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 520).ToList();
-                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
-                    DemoDataDbContext.Cache.Count));
             }
 
             return Results;
