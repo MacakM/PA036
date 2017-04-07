@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using DotNetCache.DataAccess.DemoDataContext;
 using EFCache;
@@ -39,10 +40,11 @@ namespace DotNetCache.Logic.Experiments
         {
             return new ExperimentSettings
             {
-                CachePurgeInterval = TimeSpan.Zero,
+                CachePurgeInterval = 0,
                 MaxCacheEntries = 0,
                 MaxCacheSizeInMegaBytes = 0,
                 RelativeCacheEntryValidity = TimeSpan.Zero
+
             };
         }
     }

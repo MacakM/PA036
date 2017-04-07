@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using EFCache;
 
 namespace DotNetCache.Logic.Experiments
@@ -7,10 +9,11 @@ namespace DotNetCache.Logic.Experiments
     {
         public double MaxCacheSizeInMegaBytes { get; set; }
         public int MaxCacheEntries { get; set; }
-        public TimeSpan CachePurgeInterval { get; set; }
+        public int CachePurgeInterval { get; set; }
         public TimeSpan RelativeCacheEntryValidity { get; set; }
+        public Dictionary<string, MetadataWorkspace> BlackList { get; set; } = new Dictionary<string, MetadataWorkspace>(); 
 
-        public ExperimentSettings(double maxCacheSizeInMegaBytes, int maxCacheEntries, TimeSpan cachePurgeInterval, TimeSpan relativeCacheEntryValidity)
+        public ExperimentSettings(double maxCacheSizeInMegaBytes, int maxCacheEntries, int cachePurgeInterval, TimeSpan relativeCacheEntryValidity)
         {
             MaxCacheSizeInMegaBytes = maxCacheSizeInMegaBytes;
             MaxCacheEntries = maxCacheEntries;
@@ -27,7 +30,11 @@ namespace DotNetCache.Logic.Experiments
             CachingPolicy.SlidingExpiration = setUp.RelativeCacheEntryValidity;
             InMemoryCache.EntryCountLimit = setUp.MaxCacheEntries;
             InMemoryCache.EntrySizeLimit = setUp.MaxCacheSizeInMegaBytes;
-           
+            InMemoryCache.PurgeSpan = setUp.CachePurgeInterval;
+            foreach (var blacklistEntry in setUp.BlackList.Keys)
+            {
+                BlacklistedQueriesRegistrar.Instance.AddBlacklistedQuery(setUp.BlackList[blacklistEntry], blacklistEntry);
+            }
         }
 
         public static ExperimentSettings Default = new ExperimentSettings
@@ -35,7 +42,7 @@ namespace DotNetCache.Logic.Experiments
             MaxCacheSizeInMegaBytes = double.MaxValue,
             MaxCacheEntries = int.MaxValue,
             RelativeCacheEntryValidity = TimeSpan.MaxValue,
-            CachePurgeInterval = TimeSpan.MaxValue
+            CachePurgeInterval = Int32.MaxValue
         };
     }
 }
