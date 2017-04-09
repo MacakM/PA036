@@ -4,6 +4,13 @@ parameters:
     #parameter_name: value
 
 services:
+  pa036_sql_logger:
+    class: Doctrine\DBAL\Logging\DebugStack
+  request_listener:
+    class: AppBundle\Listener\RequestListener
+    arguments: ['@service_container']
+    tags:
+      - { name: kernel.event_listener, event: kernel.request }
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']

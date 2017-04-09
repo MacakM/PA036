@@ -3,12 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Cache;
 
 /**
  * Orders
  *
  * @ORM\Table(name="ORDERS", indexes={@ORM\Index(name="IDX_15D73A689A2ED26D", columns={"O_CUSTKEY"})})
  * @ORM\Entity
+ * @Cache(usage="READ_ONLY",region="test_region")
  */
 class Orders
 {

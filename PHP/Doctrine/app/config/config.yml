@@ -42,7 +42,7 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver: sqlsrv
+        driver_class: 'AppBundle\Model\DBAL\Driver\MSSql\Driver'
         host: '%database_host%'
         port: '%database_port%'
         dbname: '%database_name%'
@@ -57,9 +57,18 @@ doctrine:
         #path: '%database_path%'
 
     orm:
-        auto_generate_proxy_classes: '%kernel.debug%'
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+      auto_generate_proxy_classes: '%kernel.debug%'
+      naming_strategy: doctrine.orm.naming_strategy.underscore
+      auto_mapping: true
+      second_level_cache:
+        region_cache_driver:
+            type:           memcached
+        enabled:              true
+        log_enabled:          true
+        regions:
+            test_region:
+                cache_driver:  memcached
+                lifetime:   3600
 
 # Swiftmailer Configuration
 swiftmailer:
