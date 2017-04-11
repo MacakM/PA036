@@ -18,12 +18,15 @@ namespace DotNetCache.Logic.Experiments
 
         public override List<ExperimentResult> Start()
         {
+            int maxCustomerId;
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
 
+                maxCustomerId = db.Customers.Max(o => o.C_CUSTKEY) + 1;
                 var customer = new Customer
                 {
+                    C_CUSTKEY = maxCustomerId,
                     C_NATIONKEY = 1,
                     C_NAME = "Martin",
                     C_ADDRESS = "Brno",
@@ -35,10 +38,8 @@ namespace DotNetCache.Logic.Experiments
                 db.Customers.Add(customer);
                 db.SaveChanges();
 
-                var customerId = customer.C_CUSTKEY;
-
                 StartTime();
-                var res = db.Customers.Cacheable().First(c => c.C_CUSTKEY == customerId);
+                var res = db.Customers.Cacheable().FirstOrDefault(c => c.C_CUSTKEY == maxCustomerId);
                 Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
                     DemoDataDbContext.Cache.Count));
 
@@ -49,28 +50,10 @@ namespace DotNetCache.Logic.Experiments
             {
                 db.Database.Log = s => Log += s;
 
-                var customer = new Customer
-                {
-                    C_NATIONKEY = 1,
-                    C_NAME = "Martin",
-                    C_ADDRESS = "Brno",
-                    C_COMMENT = "Best customer",
-                    C_ACCTBAL = 0,
-                    C_PHONE = "12345",
-                    C_MKTSEGMENT = "lol"
-                };
-                db.Customers.Add(customer);
-                db.SaveChanges();
-
-                var customerId = customer.C_CUSTKEY;
-
                 StartTime();
-                var res = db.Customers.Cacheable().First(c => c.C_CUSTKEY == customerId);
+                var res = db.Customers.Cacheable().FirstOrDefault(c => c.C_CUSTKEY == maxCustomerId);
                 Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(),
                     DemoDataDbContext.Cache.Count));
-
-                db.Customers.Remove(customer);
-                db.SaveChanges();
             }
 
             return Results;
