@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DotNetCache.DataAccess.DemoDataContext;
+using DotNetCache.DataAccess.DemoDataEntities;
 using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
@@ -28,13 +29,26 @@ namespace DotNetCache.Logic.Experiments
                 var res = db.Orders.Cacheable().Where(o => o.O_TOTALPRICE < 1000).ToList();
                 Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
             }
-
+            Orders order;
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
 
-                var order = db.Orders.FirstOrDefault(o => o.O_TOTALPRICE < 1000);
-                order.O_COMMENT = "LOL";
+                var maxOrderId = db.Orders.Max(o => o.O_ORDERKEY);
+                order = new Orders
+                {
+                    O_CUSTKEY = 1,
+                    O_ORDERKEY = maxOrderId + 1,
+                    O_COMMENT = "furiously special f|",
+                    O_ORDERPRIORITY = "3-MEDIUM",
+                    O_TOTALPRICE = 851,
+                    O_CLERK = "Peter",
+                    O_ORDERDATE = DateTime.Now,
+                    O_ORDERSTATUS = "O",
+                    O_SHIPPRIORITY = 0
+                };
+
+                db.Orders.Add(order);
                 db.SaveChanges();
             }
 
@@ -45,6 +59,9 @@ namespace DotNetCache.Logic.Experiments
                 StartTime();
                 var res = db.Orders.Cacheable().Where(o => o.O_TOTALPRICE < 1000).ToList();
                 Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
+
+                db.Orders.Remove(order);
+                db.SaveChanges();
             }
 
             return Results;

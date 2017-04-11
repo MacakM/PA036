@@ -11,7 +11,7 @@ namespace DotNetCache.Logic.Experiments
 {
     /// <summary>
     /// Tests second level cache after DELETE.
-    /// TODO: THIS DOES NOT MAKE SENSE
+    /// TODO: NOT WORKING
     /// </summary>
     public class Experiment12 : ExperimentBase
     {
