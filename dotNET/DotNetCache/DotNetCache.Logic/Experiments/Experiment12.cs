@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using DotNetCache.DataAccess.DemoDataContext;
 using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
 {
     /// <summary>
-    /// Tests second level cache after UPDATE.
+    /// Tests second level cache after DELETE.
+    /// TODO: NOT WORKING
     /// </summary>
-    public class Experiment10 : ExperimentBase
+    public class Experiment12 : ExperimentBase
     {
-        public Experiment10(string connectionString) : base(connectionString)
+        public Experiment12(string connectionString) : base(connectionString)
         {
         }
 
@@ -21,10 +23,10 @@ namespace DotNetCache.Logic.Experiments
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
-                
-                    StartTime();
-                    var res = db.Orders.Cacheable().Where(o => o.O_TOTALPRICE < 1000).ToList();
-                    Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
+
+                StartTime();
+                var res = db.Orders.Cacheable().Where(o => o.O_TOTALPRICE < 1000).ToList();
+                Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
             }
 
             using (var db = new DemoDataDbContext(ConnectionString))
@@ -32,7 +34,7 @@ namespace DotNetCache.Logic.Experiments
                 db.Database.Log = s => Log += s;
 
                 var order = db.Orders.FirstOrDefault(o => o.O_TOTALPRICE < 1000);
-                order.O_COMMENT = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                order.O_COMMENT = "LOL";
                 db.SaveChanges();
             }
 
