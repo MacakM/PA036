@@ -19,12 +19,11 @@ namespace DotNetCache.Console
         public static string ConnectionString2000 =
                     @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "2000M.mdf") + ";Integrated Security=True";
 
-        public static void Main(string[] args)
-        {
+        private static int[] _dbs = {2, 4, 8, 10, 20};
 
-            var experiments = new List<List<ExperimentResult>>
-            {
-                //new ExperimentService(new Experiment01(ConnectionString200)).Start(),
+        private static List<Type> _experiments = new List<Type>
+        {
+            //new ExperimentService(new Experiment01(ConnectionString200)).Start(),
                 //new ExperimentService(new Experiment02(ConnectionString200)).Start(),
                 //new ExperimentService(new Experiment03(ConnectionString200)).Start(),
                 //new ExperimentService(new Experiment04(ConnectionString200)).Start(),
@@ -35,20 +34,40 @@ namespace DotNetCache.Console
                 //new ExperimentService(new Experiment09(ConnectionString200)).Start(),
                 //new ExperimentService(new Experiment10(ConnectionString200)).Start(),
                 //new ExperimentService(new Experiment13(ConnectionString200)).Start(),
-                new ExperimentService(new Experiment14(ConnectionString200)).Start(),
-            };
-
-            for (int i = 0; i < experiments.Count; i++)
+                typeof(Experiment14)
+        };
+        public static void Main(string[] args)
+        {
+            var experiments = new List<List<ExperimentResult>>();
+            foreach (var db in _dbs)
             {
-                System.Console.WriteLine("Experiment " + (i+1));
-                for (int j = 0; j < experiments[i].Count; j++)
+                foreach (var experiment in _experiments)
                 {
-                    System.Console.WriteLine("Query " + (j+1) + ": " + experiments[i][j]);
+
+                    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, db + "00M.mdf");
+                    string copyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, db + "00M_cpy.mdf");
+                    string copyConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Path.Combine(AppDomain.CurrentDomain.BaseDirectory, db + "00M_cpy.mdf") + ";Integrated Security=True";
+                    File.Copy(path, copyPath, true);
+                    experiments.Add(TodayTomorrowToyota(copyConnectionString, experiment));
+                    File.Delete(copyPath);
                 }
-                System.Console.WriteLine();
+
+                for (int i = 0; i < experiments.Count; i++)
+                {
+                    System.Console.WriteLine("Db size: " + db + "Experiment " + (i + 1));
+                    for (int j = 0; j < experiments[i].Count; j++)
+                    {
+                        System.Console.WriteLine("Query " + (j + 1) + ": " + experiments[i][j]);
+                    }
+                    System.Console.WriteLine();
+                }
             }
-            
             System.Console.ReadKey();
+        }
+
+        public static List<ExperimentResult> TodayTomorrowToyota(string connectionString, Type experimentType)
+        {
+            return new ExperimentService((ExperimentBase)Activator.CreateInstance(experimentType, connectionString)).Start();
         }
     }
 }
