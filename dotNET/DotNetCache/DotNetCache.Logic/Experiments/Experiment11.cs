@@ -8,7 +8,6 @@ namespace DotNetCache.Logic.Experiments
 {
     /// <summary>
     /// Tests first level cache after DELETE.
-    /// TODO: NOT WORKING
     /// </summary>
     public class Experiment11 : ExperimentBase
     {

@@ -11,7 +11,6 @@ namespace DotNetCache.Logic.Experiments
 {
     /// <summary>
     /// Tests first level cache after INSERT.
-    /// TODO: NOT WORKING
     /// </summary>
     public class Experiment13 : ExperimentBase
     {
@@ -50,6 +49,8 @@ namespace DotNetCache.Logic.Experiments
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
+                
+                db.Customers.Attach(customer);
 
                 db.Customers.Remove(customer);
                 db.SaveChanges();

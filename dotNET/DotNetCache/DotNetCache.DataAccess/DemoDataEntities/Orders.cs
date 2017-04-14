@@ -7,7 +7,7 @@ namespace DotNetCache.DataAccess.DemoDataEntities
     [Table("Orders")]
     public class Orders
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int O_ORDERKEY { get; set; }
 
         public int O_CUSTKEY { get; set; }

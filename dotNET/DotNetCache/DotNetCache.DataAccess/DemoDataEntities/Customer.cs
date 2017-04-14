@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace DotNetCache.DataAccess.DemoDataEntities
 {
     [Table("Customer")]
     public class Customer
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int C_CUSTKEY { get; set; }
 
         public string C_NAME { get; set; }

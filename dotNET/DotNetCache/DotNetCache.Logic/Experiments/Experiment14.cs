@@ -11,7 +11,6 @@ namespace DotNetCache.Logic.Experiments
 {
     /// <summary>
     /// Tests second level cache after INSERT.
-    /// TODO: NOT WORKING
     /// </summary>
     public class Experiment14 : ExperimentBase
     {
@@ -59,6 +58,8 @@ namespace DotNetCache.Logic.Experiments
                 StartTime();
                 var res = db.Orders.Cacheable().Where(o => o.O_TOTALPRICE < 1000).ToList();
                 Results.Add(new ExperimentResult(DbQueryCached(), StopTime(), GetCacheSize(), DemoDataDbContext.Cache.Count));
+                
+                db.Orders.Attach(order);
 
                 db.Orders.Remove(order);
                 db.SaveChanges();

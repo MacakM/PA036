@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,6 @@ namespace DotNetCache.Logic.Experiments
 {
     /// <summary>
     /// Tests second level cache after DELETE.
-    /// TODO: NOT WORKING
     /// </summary>
     public class Experiment12 : ExperimentBase
     {
@@ -32,8 +32,13 @@ namespace DotNetCache.Logic.Experiments
                     O_CUSTKEY = 1,
                     O_ORDERKEY = maxOrderId + 1,
                     O_COMMENT = "Super",
-                    O_ORDERPRIORITY = "High",
-                    O_TOTALPRICE = 500
+                    O_ORDERPRIORITY = "2-HIGH",
+                    O_TOTALPRICE = 500,
+                    O_ORDERSTATUS = "O",
+                    O_ORDERDATE = DateTime.Now,
+                    O_CLERK = "Clerk#000000951",
+                    O_SHIPPRIORITY = 0
+
                 };
 
                 db.Orders.Add(order);
@@ -47,6 +52,8 @@ namespace DotNetCache.Logic.Experiments
             using (var db = new DemoDataDbContext(ConnectionString))
             {
                 db.Database.Log = s => Log += s;
+
+                db.Orders.Attach(order);
 
                 db.Orders.Remove(order);
                 db.SaveChanges();
