@@ -2,8 +2,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Customer;
+use AppBundle\Entity\Nation;
 use AppBundle\Entity\Orders;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -88,6 +90,77 @@ class BaseController extends Controller
         $orderswithCustomers = $this->getEm()->createQuery('SELECT o,c FROM '.Orders::class.' o JOIN o.oCustkey c')->useResultCache(true)->getResult();
         $orderswithCustomers = $this->getEm()->createQuery('SELECT c,n FROM '.Customer::class.' c JOIN c.cNationkey n')->useResultCache(true)->getResult();
         return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * Should produce 2 db queries before cached
+     * @Route("/base/5", name="base_api_experiment_5")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment5Action(Request $request)
+    {
+        $query1 = $this->getEm()->createQuery('SELECT c FROM ' . Customer::class . ' c ORDER BY c.cCustkey')
+            ->setFirstResult(0)->setMaxResults(100)->getResult();
+        $query2 = $this->getEm()->createQuery('SELECT c FROM ' . Customer::class . ' c ORDER BY c.cCustkey')
+            ->setFirstResult(0)->setMaxResults(150)->getResult();
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * @Route("/base/9", name="base_api_experiment_9")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment9Action(Request $request)
+    {
+        $customer = $this->getEm()->getRepository(Customer::class)->find(1);
+        $customer->setCComment((new \DateTime())->getTimestamp());
+        $this->getEm()->flush($customer);
+        $customer2 = $this->getEm()->getRepository(Customer::class)->find(1);
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * @Route("/base/11", name="base_api_experiment_11")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment11Action(Request $request)
+    {
+        $customer = $this->createCust();
+        $this->getEm()->persist($customer);
+        $this->getEm()->flush($customer);
+        $custId = $customer->getCCustkey();
+        $this->getEm()->remove($customer);
+        $customer2 = $this->getEm()->getRepository(Customer::class)->find($custId);
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * @Route("/base/13", name="base_api_experiment_13")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment13Action(Request $request)
+    {
+        $customer = $this->createCust();
+        $this->getEm()->persist($customer);
+        $this->getEm()->flush($customer);
+        $customer2 = $this->getEm()->getRepository(Customer::class)->find($customer->getCCustkey());
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    private function createCust(){
+        $customer = new Customer();
+        $customer->setCNationkey($this->getEm()->getRepository(Nation::class)->find(1));
+        $customer->setCName("Cust");
+        $customer->setCAddress('B');
+        $customer->setCComment('best customer');
+        $customer->setCAcctbal(0);
+        $customer->setCPhone('1');
+        $customer->setCMktsegment("lolek");
+        return $customer;
     }
 
     /**
