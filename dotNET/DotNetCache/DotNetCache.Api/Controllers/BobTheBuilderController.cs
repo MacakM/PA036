@@ -1,12 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using DotNetCache.Api.Models;
 using DotNetCache.Logic.Experiments;
 using DotNetCache.Logic.Services;
-using System.Collections.Generic;
-using System.Web.Http.Cors;
 
 namespace DotNetCache.Api.Controllers
 {

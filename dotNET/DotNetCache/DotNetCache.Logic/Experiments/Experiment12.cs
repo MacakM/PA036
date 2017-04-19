@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DotNetCache.DataAccess.DemoDataContext;
 using DotNetCache.DataAccess.DemoDataEntities;
 using EFSecondLevelCache;

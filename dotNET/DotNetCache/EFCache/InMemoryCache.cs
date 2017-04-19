@@ -42,6 +42,10 @@ namespace EFCache
             _cache.Clear();
         }
 
+        public List<string> GetKeys()
+        {
+            return _cache.Keys.ToList();
+        } 
         public bool GetItem(string key, out object value)
         {
             if (key == null)

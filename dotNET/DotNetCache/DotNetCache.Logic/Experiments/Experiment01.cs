@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using DotNetCache.DataAccess.DemoDataContext;
-using EFCache;
 using EFSecondLevelCache;
 
 namespace DotNetCache.Logic.Experiments
