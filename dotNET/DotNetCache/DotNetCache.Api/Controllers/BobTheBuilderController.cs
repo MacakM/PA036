@@ -5,6 +5,8 @@ using System.Web.Http;
 using DotNetCache.Api.Models;
 using DotNetCache.Logic.Experiments;
 using DotNetCache.Logic.Services;
+using System.Collections.Generic;
+using System.Web.Http.Cors;
 
 namespace DotNetCache.Api.Controllers
 {
@@ -16,7 +18,8 @@ namespace DotNetCache.Api.Controllers
 
         [HttpGet]
         [Route("api/BobTheBuilder/Experiment/{id}")]
-        public string /*ExperimentInfo*/ Experiment(int id)
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        public ExperimentInfo Experiment(int id)
         {
             switch (id)
             {
@@ -35,11 +38,39 @@ namespace DotNetCache.Api.Controllers
                 case 5:
                     ExperimentService = new ExperimentService(new Experiment05(ConnectionString));
                     break;
+                case 6:
+                    ExperimentService = new ExperimentService(new Experiment06(ConnectionString));
+                    break;
+                case 7:
+                    ExperimentService = new ExperimentService(new Experiment07(ConnectionString));
+                    break;
+                case 8:
+                    ExperimentService = new ExperimentService(new Experiment08(ConnectionString));
+                    break;
+                case 9:
+                    ExperimentService = new ExperimentService(new Experiment09(ConnectionString));
+                    break;
+                case 10:
+                    ExperimentService = new ExperimentService(new Experiment10(ConnectionString));
+                    break;
+                case 11:
+                    ExperimentService = new ExperimentService(new Experiment11(ConnectionString));
+                    break;
+                case 12:
+                    ExperimentService = new ExperimentService(new Experiment12(ConnectionString));
+                    break;
+                case 13:
+                    ExperimentService = new ExperimentService(new Experiment13(ConnectionString));
+                    break;
+                case 14:
+                    ExperimentService = new ExperimentService(new Experiment14(ConnectionString));
+                    break;
                 default:
                     throw new ArgumentException("Experiment does not exist or is not registered");
             }
             var result = ExperimentService.Start();
-            return result.Select(x => x.ToString()).Aggregate((st, nd) => $"{st}\n{nd}");
+            //return result.Select(x => x.ToString()).Aggregate((st, nd) => $"{st}\n{nd}");
+            return new ExperimentInfo { ExperimentId = id, Results = result };
         }
     }
 }

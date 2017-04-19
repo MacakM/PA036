@@ -1,6 +1,6 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -20,5 +20,12 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 70px;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+
+th, td {
+    text-align: center;
 }

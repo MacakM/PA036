@@ -1,10 +1,17 @@
-﻿namespace DotNetCache.Logic.Experiments
+﻿using System.Runtime.Serialization;
+
+namespace DotNetCache.Logic.Experiments
 {
+    [DataContract]
     public class ExperimentResult
     {
+        [DataMember]
         public bool Cached { get; set; }
+        [DataMember]
         public int Time { get; set; }
+        [DataMember]
         public double Memory { get; set; }
+        [DataMember]
         public int EntryCount { get; set; }
 
         public ExperimentResult(bool cached = false, int time = 0, double memory = 0, int entryCount = 0)
