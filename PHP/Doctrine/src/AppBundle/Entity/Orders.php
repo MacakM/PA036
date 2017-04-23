@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\Cache;
  *
  * @ORM\Table(name="ORDERS", indexes={@ORM\Index(name="IDX_15D73A689A2ED26D", columns={"O_CUSTKEY"})})
  * @ORM\Entity
- * @Cache(usage="READ_ONLY",region="test_region")
+ * @Cache(usage="NONSTRICT_READ_WRITE",region="test_region")
  */
 class Orders
 {
@@ -74,8 +74,8 @@ class Orders
 
     /**
      * @var \AppBundle\Entity\Customer
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Customer")
+     * @Cache("NONSTRICT_READ_WRITE")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Customer",inversedBy="orders")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="O_CUSTKEY", referencedColumnName="C_CUSTKEY")
      * })
