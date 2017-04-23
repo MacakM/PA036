@@ -87,8 +87,8 @@ class BaseController extends Controller
      */
     public function experiment4Action(Request $request)
     {
-        $orderswithCustomers = $this->getEm()->createQuery('SELECT o,c FROM '.Orders::class.' o JOIN o.oCustkey c')->useResultCache(true)->getResult();
-        $orderswithCustomers = $this->getEm()->createQuery('SELECT c,n FROM '.Customer::class.' c JOIN c.cNationkey n')->useResultCache(true)->getResult();
+        $orderswithCustomers = $this->getEm()->createQuery('SELECT o,c FROM '.Orders::class.' o JOIN o.oCustkey c where c.cAcctbal > 10 and c.cAcctbal < 100')->setCacheable(true)->getResult();
+        $orderswithCustomers = $this->getEm()->createQuery('SELECT c,n FROM '.Customer::class.' c JOIN c.cNationkey n where c.cAcctbal > 10 and c.cAcctbal < 100')->getResult();
         return new JsonResponse($this->get('pa036_sql_logger')->queries);
     }
 
@@ -108,6 +108,21 @@ class BaseController extends Controller
     }
 
     /**
+     * Should produce 3 db queries
+     * @Route("/base/6", name="base_api_experiment_6")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment6Action(Request $request)
+    {
+        $customers = $this->getEm()->createQuery('SELECT c FROM '.Customer::class.' c WHERE c.cCustkey < 500')->useResultCache(true)->getResult();
+        $customers = $this->getEm()->createQuery('SELECT c FROM '.Customer::class.' c WHERE c.cCustkey < 501')->useResultCache(true)->getResult();
+        $customers = $this->getEm()->createQuery('SELECT c FROM '.Customer::class.' c WHERE c.cCustkey < 520')->useResultCache(true)->getResult();
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+
+    /**
      * @Route("/base/9", name="base_api_experiment_9")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -118,6 +133,23 @@ class BaseController extends Controller
         $customer->setCComment((new \DateTime())->getTimestamp());
         $this->getEm()->flush($customer);
         $customer2 = $this->getEm()->getRepository(Customer::class)->find(1);
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * @Route("/base/10", name="base_api_experiment_10")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment10Action(Request $request)
+    {
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o WHERE o.oTotalprice < 1000')->useResultCache(true)->getResult();
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o WHERE o.oTotalprice < 1000')->useResultCache(true)->getResult();
+        /** @var Orders $order */
+        $order = reset($orders);
+        $order->setOComment((new \DateTime())->getTimestamp());
+        $this->getEm()->flush($order);
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o WHERE o.oTotalprice < 1000')->useResultCache(true)->getResult();
         return new JsonResponse($this->get('pa036_sql_logger')->queries);
     }
 
@@ -148,6 +180,36 @@ class BaseController extends Controller
         $this->getEm()->persist($customer);
         $this->getEm()->flush($customer);
         $customer2 = $this->getEm()->getRepository(Customer::class)->find($customer->getCCustkey());
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * @Route("/base/17", name="base_api_experiment_17")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment17Action(Request $request)
+    {
+        /** @var Customer[] $customers */
+        $customers = $this->getEm()->createQuery('SELECT c,o FROM ' . Customer::class . ' c join c.orders o where c.cAcctbal > 10 and c.cAcctbal < 100')->setCacheable(true)->getResult();
+        foreach ($customers as $customer) {
+            $customer->getOrders();
+        }
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * @Route("/base/18", name="base_api_experiment_18")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment18Action(Request $request)
+    {
+        /** @var Customer[] $customers */
+        $customers = $this->getEm()->createQuery('SELECT c FROM ' . Customer::class . ' c where c.cAcctbal > 10 and c.cAcctbal < 100')->getResult();
+        foreach($customers as $customer) {
+            $customer->getOrders();
+        }
         return new JsonResponse($this->get('pa036_sql_logger')->queries);
     }
 

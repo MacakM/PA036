@@ -27,6 +27,11 @@ class RequestListener
             // don't do anything if it's not the master request
             return;
         }
-        //$this->container->get('doctrine')->getConnection()->getConfiguration()->setSQLLogger($this->container->get('pa036_sql_logger'));
+
+        /* @var $config \Doctrine\ORM\Configuration */
+//        $logger = new \Doctrine\ORM\Cache\Logging\StatisticsCacheLogger();
+//        $this->container->get('doctrine')->getConnection()->getConfiguration()->getSecondLevelCacheConfiguration()->setCacheLogger($logger);
+
+//        $this->container->get('doctrine')->getConnection()->getConfiguration()->setSQLLogger($this->container->get('pa036_sql_logger'));
     }
 }
