@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Cache;
 
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping\Cache;
  *
  * @ORM\Table(name="CUSTOMER", indexes={@ORM\Index(name="IDX_470A124522864F86", columns={"C_NATIONKEY"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CustomerRepository")
- * @Cache(usage="READ_ONLY",region="test_region")
+ * @Cache(usage="NONSTRICT_READ_WRITE",region="test_region")
  */
 class Customer
 {
@@ -75,7 +76,12 @@ class Customer
      */
     private $cNationkey;
 
-
+    /**
+     * @var \AppBundle\Entity\Orders[]|ArrayCollection
+     * @Cache("NONSTRICT_READ_WRITE")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Orders",mappedBy="oCustkey")
+     */
+    private $orders;
 
     /**
      * Set cName
@@ -253,5 +259,13 @@ class Customer
     public function getCNationkey()
     {
         return $this->cNationkey;
+    }
+
+    /**
+     * @return Orders[]
+     */
+    public function getOrders()
+    {
+        return $this->orders->toArray();
     }
 }
