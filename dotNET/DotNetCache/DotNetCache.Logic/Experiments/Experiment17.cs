@@ -16,7 +16,11 @@ namespace DotNetCache.Logic.Experiments
         {
             using (var db = new DemoDataDbContext(ConnectionString))
             {
-                var customers = db.Customers.Cacheable().GroupJoin(db.Orders, customer => customer.C_CUSTKEY, order => order.O_CUSTKEY, (customer, order) => new {customer, order}).Where(c => c.customer.C_ACCTBAL > 10 && c.customer.C_ACCTBAL < 100).ToList()
+                var customers = db.Customers.Cacheable()
+                    .GroupJoin(db.Orders, customer => customer.C_CUSTKEY, order => order.O_CUSTKEY,
+                        (customer, order) => new {customer, order})
+                    .Where(c => c.customer.C_ACCTBAL > 10 && c.customer.C_ACCTBAL < 100)
+                    .ToList();
                 
                 foreach (var customer in customers)
                 { 
