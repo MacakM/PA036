@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotNetCache.DataAccess.DemoDataEntities
@@ -25,6 +26,7 @@ namespace DotNetCache.DataAccess.DemoDataEntities
         public string C_MKTSEGMENT { get; set; }
 
         public string C_COMMENT { get; set; }
+        public virtual List<Orders> Orderses { get; set; }
 
     }
 }
