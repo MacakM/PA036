@@ -12,8 +12,8 @@ namespace DotNetCache.Logic.Experiments
 {
     /**
      * Experiment has to prove cache inconsistency when db is updated from multiple sources
-     * 1) .NET instance calls experiment 16, makes query - waits 10 second
-     * 2) PHP instance calls experiment 16 - changes something within this 10 seconds
+     * 1) .NET instance calls experiment 16, makes query
+     * 2)  DB is changed without using cache.
      * 3) .NET makes same query  - query shall hit the cache even if it is not valid
      */
     public class Experiment16 : ExperimentBase
@@ -27,14 +27,17 @@ namespace DotNetCache.Logic.Experiments
         {
             using (var db = new DemoDataDbContext(ConnectionString))
             {
+                var changeTo = DateTime.Now.Millisecond;
                 Console.WriteLine("Getting data to cache");
                 var customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 750).ToList();
                 _cached = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 750).ToList();
+                var key = _cached.ElementAt(0).C_CUSTKEY;
                 Console.WriteLine("Sleeping");
-                Thread.Sleep(10000);
+                db.Database.ExecuteSqlCommand("UPDATE CUSTOMER SET C_NAME = '"+ changeTo+"' WHERE C_CUSTKEY='" + key + "'");
+                var check = db.Customers.Cacheable().Where(c => c.C_CUSTKEY == key).ToList();
                 Console.WriteLine("Woke up");
-                _cached = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 750).ToList();
-                Console.WriteLine("If true, and PHP done its job, data are inconsistent. Cached: " + InMemoryCache.LastCached); // If true, and PHP done its job, data are inconsistent.
+                var x = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 750).ToList();
+                Console.WriteLine("If true, data are inconsistent. Cached: " + InMemoryCache.LastCached + " should equal if consistent: " + changeTo + " : " + x.Where(y=>y.C_CUSTKEY == key).First().C_NAME); 
             }
             return Results;
         }

@@ -26,7 +26,7 @@ namespace DotNetCache.Console
             /* typeof(Experiment01),typeof(Experiment02),typeof(Experiment03),typeof(Experiment04),
              typeof(Experiment05),typeof(Experiment06),typeof(Experiment07),typeof(Experiment08),
              typeof(Experiment09),typeof(Experiment10),typeof(Experiment11),typeof(Experiment12),
-             typeof(Experiment13), typeof(Experiment14), typeof(Experiment15), typeof(Experiment16)*/ typeof(Experiment17), typeof(Experiment18)
+             typeof(Experiment13), typeof(Experiment14), typeof(Experiment15), */typeof(Experiment16)/*, typeof(Experiment17), typeof(Experiment18)*/
         };
         public static void Main(string[] args)
         {
