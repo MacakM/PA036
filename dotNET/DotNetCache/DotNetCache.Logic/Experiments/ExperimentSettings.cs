@@ -7,10 +7,10 @@ namespace DotNetCache.Logic.Experiments
 {
     public class ExperimentSettings
     {
-        public double MaxCacheSizeInMegaBytes { get; set; }
-        public int MaxCacheEntries { get; set; }
-        public int CachePurgeInterval { get; set; }
-        public TimeSpan RelativeCacheEntryValidity { get; set; }
+        public double MaxCacheSizeInMegaBytes { get; set; } = Double.MaxValue;
+        public int MaxCacheEntries { get; set; } = Int32.MaxValue;
+        public int CachePurgeInterval { get; set; } = Int32.MaxValue;
+        public TimeSpan RelativeCacheEntryValidity { get; set; } = TimeSpan.MaxValue;
         public Dictionary<string, MetadataWorkspace> BlackList { get; set; } = new Dictionary<string, MetadataWorkspace>(); 
 
         public ExperimentSettings(double maxCacheSizeInMegaBytes, int maxCacheEntries, int cachePurgeInterval, TimeSpan relativeCacheEntryValidity)

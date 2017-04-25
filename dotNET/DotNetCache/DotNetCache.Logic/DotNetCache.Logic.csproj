@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Experiments\Experiment18.cs" />
     <Compile Include="Experiments\Experiment01.cs" />
     <Compile Include="Experiments\Experiment02.cs" />
     <Compile Include="Experiments\Experiment03.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Experiments\Experiment14.cs" />
     <Compile Include="Experiments\Experiment15.cs" />
     <Compile Include="Experiments\Experiment16.cs" />
+    <Compile Include="Experiments\Experiment17.cs" />
     <Compile Include="Experiments\ExperimentBase.cs" />
     <Compile Include="Experiments\ExperimentResult.cs" />
     <Compile Include="Experiments\ExperimentSettings.cs" />

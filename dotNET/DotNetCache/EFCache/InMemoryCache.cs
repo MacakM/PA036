@@ -13,7 +13,7 @@ namespace EFCache
     [Serializable]
     public class InMemoryCache : ICache
     {
-        private readonly Dictionary<string, CacheEntry> _cache = new Dictionary<string, CacheEntry>();
+        public readonly Dictionary<string, CacheEntry> _cache = new Dictionary<string, CacheEntry>();
         private readonly Dictionary<string, HashSet<string>> _entitySetToKey = new Dictionary<string, HashSet<string>>();
         public static bool LastCached { get; private set; } 
         public static double EntryCountLimit { get; set; }
@@ -39,7 +39,9 @@ namespace EFCache
         }
         public void ClearCache()
         {
+            LastCached = false;
             _cache.Clear();
+            _entitySetToKey.Clear();
         }
 
         public List<string> GetKeys()
@@ -237,7 +239,7 @@ namespace EFCache
         }
 
         [Serializable]
-        private class CacheEntry
+        public class CacheEntry
         {
             private readonly object _value;
             private readonly string[] _entitySets;
