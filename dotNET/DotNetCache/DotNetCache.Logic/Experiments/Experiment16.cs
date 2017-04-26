@@ -32,10 +32,10 @@ namespace DotNetCache.Logic.Experiments
                 var customers = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 750).ToList();
                 _cached = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 750).ToList();
                 var key = _cached.ElementAt(0).C_CUSTKEY;
-                Console.WriteLine("Sleeping");
+                Console.WriteLine("Changing value");
                 db.Database.ExecuteSqlCommand("UPDATE CUSTOMER SET C_NAME = '"+ changeTo+"' WHERE C_CUSTKEY='" + key + "'");
                 var check = db.Customers.Cacheable().Where(c => c.C_CUSTKEY == key).ToList();
-                Console.WriteLine("Woke up");
+                Console.WriteLine("Value changed");
                 var x = db.Customers.Cacheable().Where(c => c.C_CUSTKEY < 750).ToList();
                 Console.WriteLine("If true, data are inconsistent. Cached: " + InMemoryCache.LastCached + " should equal if consistent: " + changeTo + " : " + x.Where(y=>y.C_CUSTKEY == key).First().C_NAME); 
             }
