@@ -23,9 +23,7 @@ namespace DotNetCache.Logic.Experiments02
                     this.AddResult(DemoDataDbContext.Cache.Count);
                 };
                 this._timer.Start();
-
-                Thread.Sleep(2000);
-                return;
+                
                 //SELECT c.C_CUSTKEY FROM CUSTOMER c JOIN ORDERS o ON c.C_CUSTKEY = o.O_CUSTKEY 
                 //JOIN LINEITEM l ON l.L_ORDERKEY = o.O_ORDERKEY JOIN PART p ON l.L_PARTKEY = p.P_PARTKEY GROUP BY c.C_CUSTKEY
                 var res = db.Customers.Cacheable()
