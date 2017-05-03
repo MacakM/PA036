@@ -41,14 +41,7 @@ namespace DotNetCache.Logic.Experiments
 
         protected double GetCacheSize()
         {
-            long size = 0;
-            using (Stream s = new MemoryStream())
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(s, DemoDataDbContext.Cache);
-                size = s.Length;
-            }
-            return (size / 1024f) / 1024f;
+            return InMemoryCache.CacheSizeInMb;
         }
 
         public virtual void PrepareSettings()

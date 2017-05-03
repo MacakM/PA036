@@ -13,13 +13,17 @@ namespace EFCache
     [Serializable]
     public class InMemoryCache : ICache
     {
-        public readonly Dictionary<string, CacheEntry> _cache = new Dictionary<string, CacheEntry>();
-        private readonly Dictionary<string, HashSet<string>> _entitySetToKey = new Dictionary<string, HashSet<string>>();
-        public static bool LastCached { get; private set; } 
+        public Dictionary<string, CacheEntry> _cache { get; } = new Dictionary<string, CacheEntry>();
+
+        private readonly Dictionary<string, HashSet<string>> _entitySetToKey =
+            new Dictionary<string, HashSet<string>>();
+
+        public static bool LastCached { get; private set; }
         public static double EntryCountLimit { get; set; }
         public static double EntrySizeLimit { get; set; }
-
+        public static double CacheSizeInMb { get; set; }
         private static int _purgeSpan = Int32.MaxValue;
+
         public static int PurgeSpan
         {
             get { return _purgeSpan; }
@@ -37,17 +41,20 @@ namespace EFCache
         {
             PurgePeriodically();
         }
+
         public void ClearCache()
         {
             LastCached = false;
             _cache.Clear();
             _entitySetToKey.Clear();
+            CacheSizeInMb = 0;
         }
 
         public List<string> GetKeys()
         {
             return _cache.Keys.ToList();
-        } 
+        }
+
         public bool GetItem(string key, out object value)
         {
             if (key == null)
@@ -64,7 +71,7 @@ namespace EFCache
                 CacheEntry entry;
                 if (_cache.TryGetValue(key, out entry))
                 {
-                    if(EntryExpired(entry, now))
+                    if (EntryExpired(entry, now))
                     {
                         InvalidateItem(key);
                     }
@@ -75,7 +82,7 @@ namespace EFCache
                         LastCached = true;
                         return true;
                     }
-                }                
+                }
             }
             LastCached = false;
             return false;
@@ -92,6 +99,7 @@ namespace EFCache
         }
 
         private int x = 0;
+
         private void Purge(object sender, ElapsedEventArgs e)
         {
             x++;
@@ -99,9 +107,28 @@ namespace EFCache
         }
 
 
+        public static void Decrease(CacheEntry entry, bool decreace = true)
+        {
+            long size = 0;
+            using (Stream s = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(s, entry);
+                size = s.Length;
+                if (decreace)
+                {
+                    CacheSizeInMb -= size;
+                }
+                else
+                {
+                    CacheSizeInMb += size;
+                }
+            }
+        }
+
         public void PutItem(string key, object value, IEnumerable<string> dependentEntitySets, TimeSpan slidingExpiration, DateTimeOffset absoluteExpiration)
         {
-            if (_cache.Count >= EntryCountLimit || !Compare(_cache, EntrySizeLimit))
+            if (_cache.Count >= EntryCountLimit || !Compare(CacheSizeInMb, EntrySizeLimit))
             {
                 return;
             }
@@ -120,7 +147,7 @@ namespace EFCache
                 var entitySets = dependentEntitySets.ToArray();
 
                 _cache[key] = new CacheEntry(value, entitySets , slidingExpiration, absoluteExpiration);
-
+                Decrease(_cache[key],false);
                 foreach (var entitySet in entitySets)
                 {
                     HashSet<string> keys;
@@ -136,17 +163,9 @@ namespace EFCache
             }
         }
 
-        private bool Compare(Dictionary<string, CacheEntry> cache, double limit)
+        private bool Compare(double size, double limit)
         {
-
-            long size = 0;
-            using (Stream s = new MemoryStream())
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(s, cache);
-                size = s.Length;
-            }
-            return ((size / 1024f) / 1024f)<= limit;
+            return  size <= limit;
         }
 
         public void InvalidateSets(IEnumerable<string> entitySets)
@@ -192,6 +211,7 @@ namespace EFCache
 
                 if (_cache.TryGetValue(key, out entry))
                 {
+                    Decrease(_cache[key]);
                     _cache.Remove(key);
 
                     foreach (var set in entry.EntitySets)
