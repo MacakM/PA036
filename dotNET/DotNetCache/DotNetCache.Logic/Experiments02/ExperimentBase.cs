@@ -34,7 +34,7 @@ namespace DotNetCache.Logic.Experiments02
 
         protected void AddResult(int CachedItemsCount)
         {
-            this.Results.Add(new ExperimentResult(DateTime.Now, GC.GetTotalMemory(false), CachedItemsCount, cpuCounter.NextValue()));
+            this.Results.Add(new ExperimentResult(DateTime.Now, InMemoryCache.CacheSizeInMb, CachedItemsCount, cpuCounter.NextValue()));
         }
 
         protected bool DbQueryCached()

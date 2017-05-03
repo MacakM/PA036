@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Experiments02\Experiment01.cs" />
+    <Compile Include="Experiments02\Experiment02.cs" />
+    <Compile Include="Experiments02\Experiment03.cs" />
     <Compile Include="Experiments02\ExperimentBase.cs" />
     <Compile Include="Experiments02\ExperimentResult.cs" />
     <Compile Include="Experiments\Experiment18.cs" />

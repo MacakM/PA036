@@ -73,8 +73,9 @@ namespace DotNetCache.Console
                 foreach (var entriesCount in entriesCounts)
                 {
                     System.Console.WriteLine(String.Format("Starting test with limited memory size to: {0} and cache entries to: {1}", memorySize, entriesCount));
-                    var results = RunExtraExperiment(cs, typeof(Logic.Experiments02.Experiment01), new ExperimentSettings(memorySize, entriesCount, int.MaxValue, TimeSpan.MaxValue));
+                    var results = RunExtraExperiment(cs, typeof(Logic.Experiments02.Experiment03), new ExperimentSettings(memorySize, entriesCount, int.MaxValue, TimeSpan.MaxValue));
                     ExportResults(results, memorySize + "_" + entriesCount + "_" + DbSize);
+
                 }
             }
         }
