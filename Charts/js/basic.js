@@ -7,8 +7,6 @@ $(document).ready(function(){
 });  
 
 var initializeAvg = function(summaryElement,data){
-  console.log(summaryElement);
-  console.log(data.length);
   var avgCpu = 0;
   var avgRam = 0;
   var avgItems = 0;
@@ -29,7 +27,7 @@ var initializeAvg = function(summaryElement,data){
   $(summaryElement).find('.entries-count-avg').html(Math.round(avgItems));
   $(summaryElement).find('.disk-usage-avg').html(Math.round(avgHdd * 1000) / 1000);
    
-}
+};
 
 var initializeChart = function(htmlElementId,data){
   AmCharts.makeChart(htmlElementId,
@@ -124,4 +122,4 @@ var initializeChart = function(htmlElementId,data){
 		"dataProvider": data 
     }
 	);
-}
+};
