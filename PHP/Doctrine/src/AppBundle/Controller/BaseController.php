@@ -143,13 +143,13 @@ class BaseController extends Controller
      */
     public function experiment10Action(Request $request)
     {
-        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o WHERE o.oTotalprice < 1000')->useResultCache(true)->getResult();
-        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o WHERE o.oTotalprice < 1000')->useResultCache(true)->getResult();
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o WHERE o.oTotalprice < 1000')->setCacheable(true)->getResult();
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o WHERE o.oTotalprice < 1000')->setCacheable(true)->getResult();
         /** @var Orders $order */
         $order = reset($orders);
         $order->setOComment((new \DateTime())->getTimestamp());
         $this->getEm()->flush($order);
-        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o WHERE o.oTotalprice < 1000')->useResultCache(true)->getResult();
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o WHERE o.oTotalprice < 1000')->setCacheable(true)->getResult();
         return new JsonResponse($this->get('pa036_sql_logger')->queries);
     }
 
@@ -164,8 +164,27 @@ class BaseController extends Controller
         $this->getEm()->persist($customer);
         $this->getEm()->flush($customer);
         $custId = $customer->getCCustkey();
+        $customer = $this->getEm()->getRepository(Customer::class)->find($custId);
         $this->getEm()->remove($customer);
-        $customer2 = $this->getEm()->getRepository(Customer::class)->find($custId);
+        $this->getEm()->flush($customer);
+        $customer = $this->getEm()->getRepository(Customer::class)->find($custId);
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * @Route("/base/12", name="base_api_experiment_12")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment12Action(Request $request)
+    {
+        $order = $this->createOrder();
+        $this->getEm()->persist($order);
+        $this->getEm()->flush();
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o where o.oTotalprice < 1000')->setCacheable(true)->getResult();
+        $this->getEm()->remove($order);
+        $this->getEm()->flush();
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o where o.oTotalprice < 1000')->setCacheable(true)->getResult();
         return new JsonResponse($this->get('pa036_sql_logger')->queries);
     }
 
@@ -180,6 +199,41 @@ class BaseController extends Controller
         $this->getEm()->persist($customer);
         $this->getEm()->flush($customer);
         $customer2 = $this->getEm()->getRepository(Customer::class)->find($customer->getCCustkey());
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * @Route("/base/14", name="base_api_experiment_14")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment14Action(Request $request)
+    {
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o where o.oTotalprice < 1000')->setCacheable(true)->getResult();
+        $order = $this->createOrder();
+        $this->getEm()->persist($order);
+        $this->getEm()->flush();
+        $orders = $this->getEm()->createQuery('SELECT o FROM '.Orders::class.' o where o.oTotalprice < 1000')->setCacheable(true)->getResult();
+        $this->getEm()->remove($order);
+        $this->getEm()->flush();
+        return new JsonResponse($this->get('pa036_sql_logger')->queries);
+    }
+
+    /**
+     * @Route("/base/16", name="base_api_experiment_16")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function experiment16Action(Request $request)
+    {
+        $runTime = (new \DateTime())->getTimestamp();
+        /** @var Customer[] $customers */
+        $customers = $this->getEm()->createQuery('SELECT c FROM ' . Customer::class . ' c where c.cCustkey < 750')->setCacheable(true)->getResult();
+        $customers = $this->getEm()->createQuery('SELECT c FROM ' . Customer::class . ' c where c.cCustkey < 750')->setCacheable(true)->getResult();
+
+        $id = reset($customers)->getCCustkey();
+        $this->getEm()->getConnection()->executeQuery('UPDATE CUSTOMER SET C_NAME = :time WHERE C_CUSTKEY = :id', ['time' => $runTime, 'id' => $id]);
+        $customers = $this->getEm()->createQuery('SELECT c FROM ' . Customer::class . ' c where c.cCustkey < 750')->setCacheable(true)->getResult();
         return new JsonResponse($this->get('pa036_sql_logger')->queries);
     }
 
@@ -223,6 +277,20 @@ class BaseController extends Controller
         $customer->setCPhone('1');
         $customer->setCMktsegment("lolek");
         return $customer;
+    }
+
+    private function createOrder()
+    {
+        $order = new Orders();
+        $order->setOCustkey($this->getEm()->getRepository(Customer::class)->find(1));
+        $order->setOComment("furiously special f|");
+        $order->setOOrderpriority("3-MEDIUM");
+        $order->setOTotalprice(851);
+        $order->setOClerk("Peter");
+        $order->setOOrderdate(new \DateTime());
+        $order->setOOrderstatus("0");
+        $order->setOShippriority(0);
+        return $order;
     }
 
     /**
