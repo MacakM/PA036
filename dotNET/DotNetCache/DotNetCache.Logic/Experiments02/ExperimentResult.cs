@@ -17,24 +17,17 @@ namespace DotNetCache.Logic.Experiments02
         [DataMember]
         public int CacheEntriesCount { get; set; }
         [DataMember]
+        public double DiskUsage { get; set; }
+        [DataMember]
         public string FormattedTime { get; set; }
 
-        public ExperimentResult(DateTime Time, double MemorySize, int CacheEntriesCount,double CpuUsage)
+        public ExperimentResult(DateTime Time, double MemorySize, int CacheEntriesCount,double CpuUsage,double DiskUsage)
         {
             this.CpuUsage = CpuUsage;
             this.Time = Time;
             this.MemorySize = MemorySize;
             this.CacheEntriesCount = CacheEntriesCount;
+            this.DiskUsage = DiskUsage;
         }
-
-        public override string ToString()
-        {
-            return "Cpu Usage: " + CpuUsage +
-                ", Time: " + Time.ToLongTimeString() +
-                ", Memory: " + (MemorySize - 0.00179195).ToString("0.00000000") + " MB" +
-                ", Entry count: " + CacheEntriesCount;
-        }
-
-
     }
 }

@@ -16,13 +16,14 @@ namespace DotNetCache.Logic.Experiments02
         private List<ExperimentResult> Results;
         PerformanceCounter cpuCounter;
         ExperimentSettings _settings;
-
-        protected ExperimentBase(string connectionString,ExperimentSettings ExperimentSettings)
+        PerformanceCounter diskCounter;
+        protected ExperimentBase(string connectionString, ExperimentSettings ExperimentSettings)
         {
             ConnectionString = connectionString;
             _settings = ExperimentSettings;
             Results = new List<ExperimentResult>();
             cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            diskCounter = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
         }
         public string Log { get; protected set; }
         public List<ExperimentResult> StartExperiment()
@@ -34,7 +35,7 @@ namespace DotNetCache.Logic.Experiments02
 
         protected void AddResult(int CachedItemsCount)
         {
-            this.Results.Add(new ExperimentResult(DateTime.Now, InMemoryCache.CacheSizeInMb, CachedItemsCount, cpuCounter.NextValue()));
+            this.Results.Add(new ExperimentResult(DateTime.Now, InMemoryCache.CacheSizeInMb, CachedItemsCount, cpuCounter.NextValue(), diskCounter.NextValue()));
         }
 
         protected bool DbQueryCached()
