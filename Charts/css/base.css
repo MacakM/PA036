@@ -1,0 +1,15 @@
+.avg-label{
+  text-decoration: overline;
+}
+table{
+  width: 100%;
+}
+td{
+  width: 25%;
+}
+
+.chart{
+width: 100%;
+height: 400px;
+background-color: #FFFFFF;
+}

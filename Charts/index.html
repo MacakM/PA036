@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>chart created with amCharts | amCharts</title>
+		<meta name="description" content="chart created using amCharts live editor" />
+		<link rel="stylesheet" type="text/css" href="css/base.css">                                          
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+		<script src="https://www.amcharts.com/lib/3/amcharts.js" type="text/javascript"></script>
+		<script src="https://www.amcharts.com/lib/3/serial.js" type="text/javascript"></script> 
+		<script src="js/data.js" type="text/javascript"></script>       
+		<script src="js/basic.js" type="text/javascript"></script>       
+	</head>
+	<body>
+    <div>
+      <h3>DB: 200MB, max. 2M záznamů, max. velikost cache 0% DB</h3>
+		  <div id="chart-1" class='chart' data-file="0_2M_200"></div> 
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span> %</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div>
+      <h3>DB: 200MB, max. 2M záznamů, max. velikost cache 10% DB</h3>
+		  <div id="chart-2" class='chart' data-file="20_2M_200"></div> 
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h3>DB: 200MB, max. 5M záznamů, max. velikost cache 10% DB</h3>
+		  <div id="chart-4" class='chart' data-file="20_5M_200"></div> 
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h3>DB: 200MB, max. 10M záznamů, max. velikost cache 10% DB</h3>
+		  <div id="chart-3" class='chart' data-file="20_10M_200"></div>
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div>
+      <h3>DB: 200MB, max. 2M záznamů, max. velikost cache 50% DB</h3>
+		  <div id="chart-5" class='chart' data-file="100_2M_200"></div>
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h3>DB: 200MB, max. 5M záznamů, max. velikost cache 50% DB</h3>
+		  <div id="chart-6" class='chart' data-file="100_5M_200"></div>
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h3>DB: 200MB, max. 10M záznamů, max. velikost cache 50% DB</h3>
+		  <div id="chart-7" class='chart' data-file="100_10M_200"></div>
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div>
+      <h3>DB: 200MB, max. 2M záznamů, max. velikost cache 100% DB</h3>
+  		<div id="chart-8" class='chart' data-file="200_2M_200"></div>  
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h3>DB: 200MB, max. 5M záznamů, max. velikost cache 100% DB</h3> 
+  		<div id="chart-9" class='chart' data-file="200_5M_200"></div> 
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    <div>   
+      <h3>DB: 200MB, max. 10M záznamů, max. velikost cache 100% DB</h3> 
+  		<div id="chart-10" class='chart' data-file="200_10M_200"></div>
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div>   
+      <h3>DB: 200MB, max. 2M záznamů, max. velikost cache 200% DB</h3> 
+  		<div id="chart-11" class='chart' data-file="400_2M_200"></div> 
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    <div>   
+      <h3>DB: 200MB, max. 5M záznamů, max. velikost cache 200% DB</h3>  
+  		<div id="chart-12" class='chart' data-file="400_5M_200"></div>
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+    <div>       
+      <h3>DB: 200MB, max. 10M záznamů, max. velikost cache 200% DB</h3> 
+  		<div id="chart-113" class='chart' data-file="400_10M_200" ></div>
+      <table class="summary">  
+        <tr>
+          <td><span class="avg-label">využití RAM</span>: <span class="ram-usage-avg"></span> MB</td> 
+          <td><span class="avg-label">počet záznamů</span>: <span class="entries-count-avg"></span></td>
+          <td><span class="avg-label">využití CPU</span>: <span class="cpu-usage-avg"></span>%</td>
+          <td><span class="avg-label">využití disku</span>: <span class="disk-usage-avg"></span>%</td>
+        </tr>
+      </table>
+    </div>
+	</body>
+</html>
