@@ -64,9 +64,9 @@ namespace DotNetCache.Console
         private static void RunExtraExperiments(string DbSize)
         {
             var cs = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DbSize + "M.mdf") + ";Integrated Security=True";
-            var dbSizeNumber = Convert.ToDouble(DbSize);
+            var dbSizeNumber = Convert.ToInt32(DbSize);
             var memorySizes = new double[] { 0d, dbSizeNumber * 0.1, dbSizeNumber * 0.5, dbSizeNumber, dbSizeNumber * 2 };
-            var entriesCounts = new int[] { 2000000, 10000000, 100000000 };
+            var entriesCounts = new int[] { 2000000 * (dbSizeNumber / 200), 5000000 * (dbSizeNumber / 200), 10000000 * (dbSizeNumber / 200) };
 
             foreach (var memorySize in memorySizes)
             {

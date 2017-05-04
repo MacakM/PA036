@@ -15,13 +15,13 @@ namespace DotNetCache.Logic.Experiments02
         [DataMember]
         public double MemorySize { get; set; }
         [DataMember]
-        public int CacheEntriesCount { get; set; }
+        public long CacheEntriesCount { get; set; }
         [DataMember]
         public double DiskUsage { get; set; }
         [DataMember]
         public string FormattedTime { get; set; }
 
-        public ExperimentResult(DateTime Time, double MemorySize, int CacheEntriesCount,double CpuUsage,double DiskUsage)
+        public ExperimentResult(DateTime Time, double MemorySize, long CacheEntriesCount,double CpuUsage,double DiskUsage)
         {
             this.CpuUsage = CpuUsage;
             this.Time = Time;

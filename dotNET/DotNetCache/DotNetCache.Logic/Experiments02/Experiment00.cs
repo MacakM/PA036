@@ -38,11 +38,11 @@ namespace DotNetCache.Logic.Experiments02
                                 (cust, ord) => new {Customers = cust, Orders = ord})
                             .Join(db.LineItems.Cacheable(), ord => ord.Orders.O_ORDERKEY, l => l.L_ORDERKEY,
                                 (ord, l) => new {LineItems = l, Customers = ord.Customers, Orders = ord.Orders})
-                            .Where(p => p.Customers.C_CUSTKEY < j+8000)
+                            .Where(p => p.Customers.C_CUSTKEY < j + (8000 * 1))
                             .Select(p => p.Customers.C_NAME)
                             .ToList();
 
-                        if (InMemoryCache.WasCached)
+                        if (!DbQueryCached() && InMemoryCache.WasCached)
                             InMemoryCache.RealEntryCount += res.Count;
 
                         Console.WriteLine("Run " + (i+1) + "-" + (j) + " " + DbQueryCached() + " " + InMemoryCache.CacheSizeInMb + " " + InMemoryCache.RealEntryCount);
