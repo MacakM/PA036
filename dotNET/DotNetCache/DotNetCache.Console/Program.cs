@@ -65,15 +65,18 @@ namespace DotNetCache.Console
         {
             var cs = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DbSize + "M.mdf") + ";Integrated Security=True";
             var dbSizeNumber = Convert.ToDouble(DbSize);
-            var memorySizes = new double[] { dbSizeNumber * 0.1, dbSizeNumber * 0.5, dbSizeNumber, dbSizeNumber * 2 };
-            var entriesCounts = new int[] { 1000, 10000, 100000};
+            var memorySizes = new double[] { 0d, dbSizeNumber * 0.1, dbSizeNumber * 0.5, dbSizeNumber, dbSizeNumber * 2 };
+            var entriesCounts = new int[] { 2000000, 10000000, 100000000 };
 
             foreach (var memorySize in memorySizes)
             {
                 foreach (var entriesCount in entriesCounts)
                 {
+                    if (memorySize == 0 && entriesCount != 2000000)
+                        continue;
+
                     System.Console.WriteLine(String.Format("Starting test with limited memory size to: {0} and cache entries to: {1}", memorySize, entriesCount));
-                    var results = RunExtraExperiment(cs, typeof(Logic.Experiments02.Experiment03), new ExperimentSettings(memorySize, entriesCount, int.MaxValue, TimeSpan.MaxValue));
+                    var results = RunExtraExperiment(cs, typeof(Logic.Experiments02.Experiment00), new ExperimentSettings(memorySize, entriesCount, int.MaxValue, TimeSpan.MaxValue));
                     ExportResults(results, memorySize + "_" + entriesCount + "_" + DbSize);
 
                 }
