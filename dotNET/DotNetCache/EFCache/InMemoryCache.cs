@@ -19,9 +19,11 @@ namespace EFCache
             new Dictionary<string, HashSet<string>>();
 
         public static bool LastCached { get; private set; }
+        public static bool WasCached { get; private set; }
         public static double EntryCountLimit { get; set; }
         public static double EntrySizeLimit { get; set; }
         public static double CacheSizeInMb { get; set; }
+        public static long RealEntryCount { get; set; }
         private static int _purgeSpan = Int32.MaxValue;
 
         public static int PurgeSpan
@@ -45,9 +47,11 @@ namespace EFCache
         public void ClearCache()
         {
             LastCached = false;
+            WasCached = false;
             _cache.Clear();
             _entitySetToKey.Clear();
             CacheSizeInMb = 0;
+            RealEntryCount = 0;
         }
 
         public List<string> GetKeys()
@@ -117,19 +121,20 @@ namespace EFCache
                 size = s.Length;
                 if (decreace)
                 {
-                    CacheSizeInMb -= size;
+                    CacheSizeInMb -= (double)size / 1000000;
                 }
                 else
                 {
-                    CacheSizeInMb += size;
+                    CacheSizeInMb += (double)size / 1000000;
                 }
             }
         }
 
         public void PutItem(string key, object value, IEnumerable<string> dependentEntitySets, TimeSpan slidingExpiration, DateTimeOffset absoluteExpiration)
         {
-            if (_cache.Count >= EntryCountLimit || !Compare(CacheSizeInMb, EntrySizeLimit))
+            if (RealEntryCount >= EntryCountLimit || !Compare(CacheSizeInMb, EntrySizeLimit) || EntrySizeLimit == 0)
             {
+                WasCached = false;
                 return;
             }
             if (key == null)
@@ -141,6 +146,7 @@ namespace EFCache
             {
                 throw new ArgumentNullException("dependentEntitySets");
             }
+            WasCached = true;
 
             lock (_cache)
             {

@@ -6,18 +6,20 @@ namespace DotNetCache.Logic.Services
 {
     public class ExperimentService
     {
-        private readonly ExperimentBase _experiment;
-        public ExperimentService(ExperimentBase experiment)
-        {
-            _experiment = experiment;
-        }
-
-        public List<ExperimentResult> Start()
+        public List<ExperimentResult> Start(ExperimentBase experiment)
         {
             DemoDataDbContext.Cache.ClearCache();
             DemoDataDbContext.Cache.Purge();
-            _experiment.PrepareSettings();
-            return _experiment.Start();
+            experiment.PrepareSettings();
+            return experiment.Start();
+        }
+
+        public List<Logic.Experiments02.ExperimentResult> StartExtra(Experiments02.ExperimentBase experiment)
+        {
+            DemoDataDbContext.Cache.ClearCache();
+            DemoDataDbContext.Cache.Purge();
+            experiment.PrepareSettings();
+            return experiment.StartExperiment();
         }
     }
 }

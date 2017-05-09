@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using DotNetCache.Logic.Experiments;
 using DotNetCache.Logic.Services;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace DotNetCache.Console
 {
@@ -30,6 +32,81 @@ namespace DotNetCache.Console
         };
         public static void Main(string[] args)
         {
+            System.Console.WriteLine("Choose experiment set (1 for basic, 2 for extra)");
+            var set = System.Console.ReadLine();
+            switch (set)
+            {
+                case "1": RunBasicExperiments(); break;
+                case "2":
+                    var allowedSizes = new string[] { "200", "400", "800", "1000", "2000" };
+                    System.Console.WriteLine("Choose db size (" + String.Join(",", allowedSizes) + ")");
+                    var size = System.Console.ReadLine();
+                    if (allowedSizes.Contains(size))
+                    {
+                        RunExtraExperiments(size);
+                    }
+                    else
+                    {
+                        IdiotAnnouncer();
+                    }
+                    break;
+                default: IdiotAnnouncer(); break;
+            }
+            System.Console.WriteLine("gg");
+            System.Console.ReadKey();
+        }
+
+        private static void IdiotAnnouncer()
+        {
+            System.Console.WriteLine("Well, you are extremely inteligent human.");
+        }
+
+        private static void RunExtraExperiments(string DbSize)
+        {
+            var cs = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DbSize + "M.mdf") + ";Integrated Security=True";
+            var dbSizeNumber = Convert.ToInt32(DbSize);
+            var memorySizes = new double[] { 0d, dbSizeNumber * 0.1, dbSizeNumber * 0.5, dbSizeNumber, dbSizeNumber * 2 };
+            var entriesCounts = new int[] { 2000000 * (dbSizeNumber / 200), 5000000 * (dbSizeNumber / 200), 10000000 * (dbSizeNumber / 200) };
+
+            foreach (var memorySize in memorySizes)
+            {
+                foreach (var entriesCount in entriesCounts)
+                {
+                    if (memorySize == 0 && entriesCount != 2000000)
+                        continue;
+
+                    System.Console.WriteLine(String.Format("Starting test with limited memory size to: {0} and cache entries to: {1}", memorySize, entriesCount));
+                    var results = RunExtraExperiment(cs, typeof(Logic.Experiments02.Experiment00), new ExperimentSettings(memorySize, entriesCount, int.MaxValue, TimeSpan.MaxValue));
+                    ExportResults(results, memorySize + "_" + entriesCount + "_" + DbSize);
+
+                }
+            }
+        }
+
+        private static void ExportResults(List<Logic.Experiments02.ExperimentResult> results, string nameUniquePart)
+        {
+            var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, nameUniquePart + "_export_" + DateTime.Now.ToFileTime() + ".json");
+
+            var startTime = results.First().Time;
+            results.ForEach(r =>
+            {
+                r.MemorySize = Math.Round(r.MemorySize, 2);
+                var time = (r.Time - startTime);
+                r.FormattedTime = String.Format("{0}:{1}.{2}", time.Minutes, time.Seconds, time.Milliseconds);
+            });
+
+            var exportCol = new List<Logic.Experiments02.ExperimentResult>(results);
+
+            JsonSerializer serializer = new JsonSerializer();
+            using (StreamWriter sw = new StreamWriter(fileName))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, exportCol);
+            }
+        }
+
+        private static void RunBasicExperiments()
+        {
             var experiments = new List<List<ExperimentResult>>();
             foreach (var db in Dbs)
             {
@@ -49,12 +126,16 @@ namespace DotNetCache.Console
                     System.Console.WriteLine();
                 }
             }
-            System.Console.ReadKey();
         }
 
         public static List<ExperimentResult> TodayTomorrowToyota(string connectionString, Type experimentType)
         {
-            return new ExperimentService((ExperimentBase)Activator.CreateInstance(experimentType, connectionString)).Start();
+            return new ExperimentService().Start((ExperimentBase)Activator.CreateInstance(experimentType, connectionString));
+        }
+
+        public static List<Logic.Experiments02.ExperimentResult> RunExtraExperiment(string connectionString, Type experimentType, ExperimentSettings settings)
+        {
+            return new ExperimentService().StartExtra((Logic.Experiments02.ExperimentBase)Activator.CreateInstance(experimentType, connectionString,settings));
         }
     }
 }
